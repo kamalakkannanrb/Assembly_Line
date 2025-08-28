@@ -1,11 +1,12 @@
 
+import { Page } from "./Page"
 
 function App() {
 
   return (
-    <>
-      <h1>Hello</h1>
-    </>
+    <div>
+      <Page/>
+    </div>
   )
 }
 

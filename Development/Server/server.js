@@ -6,27 +6,32 @@ const cors=require('cors');
 dotenv.config();
 
 const app=express();
+const account_owner_name=process.env.account_owner_name;
+const app_link_name=process.env.app_link_name
+const client_id=process.env.client_id;
+const client_secret=process.env.client_secret;
+const refresh_token=process.env.refresh_token;
 let accessToken='';
+// const header={"Authorization":`Zoho-oauthtoken ${accessToken}`};
 
 async function fetchAccessToken() {
-    try{
-
-    }
-    catch(e){
-        console.log(e);
-    }
+    accessToken=await fetch(`https://accounts.zoho.in/oauth/v2/token?refresh_token=${refresh_token}&client_id=${client_id}&client_secret=${client_secret}&grant_type=refresh_token`,{method:"POST"}).then((res)=>res.json()).then((res)=>res?.access_token).catch((e)=>console.log(e));
+    console.log('\x1b[1m\x1b[34m'+'New token at '+new Date()+' '+accessToken+'\x1b[0m');
 }
+fetchAccessToken();
 
-
-
-setInterval(()=>console.log('Restart'),4000);
+setInterval(fetchAccessToken,1000*59*59);
 
 app.use(cors())
 
-app.get('/',async(req,res)=>{
-    console.log(refreshToken);
-    res.send("Done!");
+app.get('/bom',async(req,res)=>{
+    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/All_SA_BOM_Masters`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e));
+    res.send(response);
 });
+
+/*
+fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/All_SA_BOM_Masters`,{headers:header}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+*/
 
 app.listen(3000,()=>{
     console.log("Server started");
