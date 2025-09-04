@@ -1,6 +1,6 @@
 
 const express=require('express');
-const dotenv=require('dotenv')
+const dotenv=require('dotenv');
 const cors=require('cors');
 
 dotenv.config();
@@ -22,20 +22,27 @@ fetchAccessToken();
 
 setInterval(fetchAccessToken,1000*59*59);
 
-app.use(cors())
+app.use(cors());
 
 app.get('/bom',async(req,res)=>{
-    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/All_SA_BOM_Masters`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e));
+    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/Sub_Assembly_BOM_Report_API_Backend`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e));
+    res.send(response);
+});
+
+app.get('/seq/:id',async(req,res)=>{
+    console.log(req.params.id);
+    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/SA_Sequence_Master_Report_API_Backend?criteria=Sub_Assembly_BOM=${req.params.id}`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e)); 
     res.send(response);
 });
 
 /*
-fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/All_SA_BOM_Masters`,{headers:header}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/All_SA_BOM_Masters`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+res.send(response);
 */
 
 app.listen(3000,()=>{
     console.log("Server started");
-})
+});
 
 /*
 ZohoCreator.form.ALL,ZohoCreator.report.ALL,ZohoCreator.meta.form.READ,ZohoCreator.meta.application.READ,ZohoCreator.dashboard.READ

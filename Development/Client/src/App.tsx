@@ -1,11 +1,11 @@
 
-import { Page } from "./Page"
+import { BentoGrid } from "./sections/BentoGrid"
 
 function App() {
 
   return (
     <div>
-      <Page/>
+      <BentoGrid/>
     </div>
   )
 }
