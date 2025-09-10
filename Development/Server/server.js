@@ -25,12 +25,13 @@ setInterval(fetchAccessToken,1000*59*59);
 app.use(cors());
 
 app.get('/bom',async(req,res)=>{
+    console.log("Requested");
     const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/Sub_Assembly_BOM_Report_API_Backend`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e));
     res.send(response);
 });
 
 app.get('/seq/:id',async(req,res)=>{
-    console.log(req.params.id);
+    console.log(req.params?.id);
     const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/SA_Sequence_Master_Report_API_Backend?criteria=Sub_Assembly_BOM=${req.params.id}`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e)); 
     res.send(response);
 });

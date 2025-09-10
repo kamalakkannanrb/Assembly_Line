@@ -1,22 +1,25 @@
 
-import { useState,useEffect } from "react"
+import { useState,useEffect, useContext, RefObject, ChangeEvent } from "react"
+import { Items,SetItems } from "../BentoGrid";
 import { Loader } from "../UtitliyComponents/Loader";
 import { getSASequence } from "../../API/getRecords";
-import { SASequence } from "../../types";
+import { SASequence,ContextItems } from "../../types";
 
-export function Stations({setStation,SAID}:any){
-    const[data,setData]=useState<null | {"Stations":String[],"Items":[SASequence],}>(null);
+export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | null>}){
+    const[data,setData]=useState<null | {"Stations":string[],"Items":[SASequence],}>(null);
+    const setItems=useContext(SetItems);
+    const items=useContext(Items);
     useEffect(()=>{
-        setStation(null);
+        setData(null);
         (async () => {
-            const res=await getSASequence(SAID);
+            const res=await getSASequence(items?.["Sub Assembly ID"]);
             console.log(res);
             if(!res){
                 setData(null);
-                setStation(null);
+                setItems(null);
                 return;
             }
-            const stations:String[]=[];
+            const stations:string[]=[];
             res[0]?.Parts?.forEach((ele)=>{
                 if(!stations.includes(ele.Station_Number))stations.push(ele.Station_Number);
                 return
@@ -24,21 +27,25 @@ export function Stations({setStation,SAID}:any){
             stations.sort();
             setData({"Items":res,"Stations":stations})
         })();
-    },[SAID])
+    },[items?.["Sub Assembly ID"]])
 
-    //@ts-ignore
-    function handleChange(e){
-        const individual:String[]=[];
-        const bin:String[]=[];
+    
+    function handleChange(e:ChangeEvent<HTMLSelectElement>){
+        const individual:Array<string[]>=new Array();
+        const bin:Array<string[]>=new Array();
         data?.Items[0].Parts.forEach((ele)=>{
-            if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value && ele.Type_field=="Individual Part")individual.push(ele.Part_Name.Part_Name);
-            else if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value && ele.Type_field=="Bin Part")bin.push(ele.Part_Name.Part_Name);
+            if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value && ele.Type_field=="Individual Part"){
+                ele.Sequence_Required?individual.push([ele.Part_Name.Part_Name,ele.Sequence_Number]):individual.push([ele.Part_Name.Part_Name,"0"]);
+            }
+            else if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value && ele.Type_field=="Bin Part"){
+                ele.Sequence_Required?bin.push([ele.Part_Name.Part_Name,ele.Sequence_Number]):bin.push([ele.Part_Name.Part_Name,"0"]);
+            };
         });
-        setStation({"Station":e.target.value,"Individual":individual,"Bin":bin});
+        setItems((pre:null | ContextItems)=>({...pre,"Individual Parts":individual,"Bin Parts":bin,"Sub Assembly BOM Prefix":data?.Items[0].Sub_Assembly_BOM_Prefix}));
     }
 
    if(data!=null){
-        return(<select onChange={handleChange}>
+        return(<select onChange={handleChange} ref={stationRef}>
             <option value="" defaultChecked>Choose a Station</option>
             {data?.Stations.map((ele,index)=><option key={index}>{ele}</option>)}
         </select>)

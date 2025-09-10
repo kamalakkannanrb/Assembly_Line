@@ -1,17 +1,30 @@
 
-import { useState } from "react";
+import { ChangeEvent, RefObject, useContext, useRef} from "react";
 import { SubAssemblies } from "./SubAssemblies";
 import { Stations } from "./Stations";
+import { Items } from "../BentoGrid";
 
 export function SubAssemblyBOM(){
-    const[SAID,setSAID]=useState(null);
-    const[station,setStation]=useState<null | {"Station":String,"Individual":String[],"Bin":String[]}>(null);
+    const items=useContext(Items);
+    const SARef:RefObject<HTMLSelectElement | null>=useRef(null);
+    const stationRef:RefObject<HTMLSelectElement | null>=useRef(null);
+    function handleCheck(e:ChangeEvent<HTMLInputElement>){
+        if(e.target.checked){
+            SARef.current?.setAttribute("disabled","true");
+            stationRef.current?.setAttribute("disabled","true");
+        }
+        else{
+            SARef.current?.removeAttribute("disabled");
+            stationRef.current?.removeAttribute("disabled");
+        }
+    }
+    
     return(
         <>  
-            <SubAssemblies setSAID={setSAID}/>
-            <Stations setStation={setStation} SAID={SAID}/>
-            {station &&<div className="flex flex-col"><strong>Individual: </strong>{station?.Individual.map((ele)=><ul>{ele}</ul>)}
-            <strong>Bin: </strong>{station?.Bin.map((ele)=><ul>{ele}</ul>)}</div>}
+            <h1 className="font-bold">Sub Assembly</h1>
+            <SubAssemblies SARef={SARef}/>
+            {items?.["Sub Assembly ID"] && <Stations stationRef={stationRef}/>}
+            {items?.["Sub Assembly ID"] && <label>Lock <input type="checkbox" onChange={handleCheck}/></label>}
         </>
 
     )
