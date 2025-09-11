@@ -35,13 +35,15 @@ export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | 
         const bin:Array<string[]>=new Array();
         data?.Items[0].Parts.forEach((ele)=>{
             if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value && ele.Type_field=="Individual Part"){
-                ele.Sequence_Required?individual.push([ele.Part_Name.Part_Name,ele.Sequence_Number]):individual.push([ele.Part_Name.Part_Name,"0"]);
+                ele.Sequence_Required?individual.push([ele.Part_Name.Part_Name,ele.Sequence_Number,"in"]):individual.push([ele.Part_Name.Part_Name,"0","in"]);
             }
             else if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value && ele.Type_field=="Bin Part"){
-                ele.Sequence_Required?bin.push([ele.Part_Name.Part_Name,ele.Sequence_Number]):bin.push([ele.Part_Name.Part_Name,"0"]);
+                ele.Sequence_Required?bin.push([ele.Part_Name.Part_Name,ele.Sequence_Number,"bin"]):bin.push([ele.Part_Name.Part_Name,"0","bin"]);
             };
         });
-        setItems((pre:null | ContextItems)=>({...pre,"Individual Parts":individual,"Bin Parts":bin,"Sub Assembly BOM Prefix":data?.Items[0].Sub_Assembly_BOM_Prefix}));
+        // console.log(individual);
+        // console.log(bin);
+        setItems((pre:null | ContextItems)=>({...pre,"Station":e.target.value,"Individual Parts":individual,"Bin Parts":bin,"Sub Assembly BOM Prefix":data?.Items[0].Sub_Assembly_BOM_Prefix}));
     }
 
    if(data!=null){

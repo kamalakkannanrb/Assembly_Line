@@ -34,7 +34,7 @@ export interface ContextItems{
     "Sub Assembly Name":string,
     "Sub Assembly ID":string,
     "Sub Assembly BOM Prefix":string,
-    "Station":Array<string[]>,
+    "Station":string,
     "Individual Parts":Array<string[]>,
     "Bin Parts":string[]
 }

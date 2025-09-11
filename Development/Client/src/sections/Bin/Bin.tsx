@@ -7,12 +7,12 @@ import { ContextItems } from "../../types";
 export function Bin(){
     const items:ContextItems | null=useContext(Items);
     return(
-        <div>
-            <h1 className="font-bold">Current Bin</h1>
+        <>
+            <h1 className="font-bold text-center">Current Bin</h1>
             <ol>
-                {items?.["Bin Parts"] && items["Bin Parts"].map((ele,index)=>(<li key={index}>{ele[0]}</li>))}
+                {items?.["Bin Parts"] && items["Bin Parts"].map((ele,index)=>(<li key={index} className=" text-center text-red-600">{ele[0]}</li>))}
             </ol>
-            <button className="border cursor-pointer">Replace Bin</button>
-        </div>
+            <button className="text-center cursor-pointer border rounded-xl p-2 bg-red-300">Replace Bin</button>
+        </>
     )
 }

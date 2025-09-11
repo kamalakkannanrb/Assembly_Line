@@ -27,12 +27,14 @@ export interface SASequence{
         "zc_display_value": string
     },
     "ID":string
+    "Sub_Assembly_BOM_Prefix":string
 }
 
 export interface ContextItems{
     "Sub Assembly Name":string,
     "Sub Assembly ID":string,
+    "Sub Assembly BOM Prefix":string,
     "Station":string,
-    "Individual Parts":string[],
+    "Individual Parts":Array<string[]>,
     "Bin Parts":string[]
 }

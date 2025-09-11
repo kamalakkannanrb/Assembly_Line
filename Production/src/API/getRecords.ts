@@ -11,7 +11,7 @@ export async function getSABOM():Promise<[{"Part_Name":string,"ID":string,"Versi
     return data?.data?data.data:null;
 }
 
-export async function getSASequence(id:string):Promise<[SASequence] | null>{
+export async function getSASequence(id:string | undefined):Promise<[SASequence] | null>{
     const config={
         report_name:"SA_Sequence_Master_Report_API_Backend",
         max_records:1000,

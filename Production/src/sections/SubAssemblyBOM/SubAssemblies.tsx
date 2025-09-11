@@ -15,7 +15,6 @@ export function SubAssemblies({SARef}:{SARef:RefObject<HTMLSelectElement | null>
     },[])
 
     function handleChange(e:ChangeEvent<HTMLSelectElement>){
-        // console.log(e.target.value.split("@")[1]);
         setItems({"Sub Assembly ID":e.target.value.split("@")[0],"Sub Assembly Name":e.target.value.split("@")[1]});
     }
 
