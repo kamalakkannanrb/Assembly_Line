@@ -1,8 +1,10 @@
 
 import { useState,useEffect, useContext, ChangeEvent, RefObject } from "react"
-import { getSABOM } from "../../API/getRecords";
 import { Loader } from "../UtitliyComponents/Loader";
-import { SetItems } from "../BentoGrid";
+//API
+import { getSABOM } from "../../api/getRecords";
+//Contexts
+import { SetItems } from "../../context/context";
 
 export function SubAssemblies({SARef}:{SARef:RefObject<HTMLSelectElement | null>}){
     const[data,setData]=useState<null | [{"Part_Name":string,"ID":string,"Version":string}]>(null);

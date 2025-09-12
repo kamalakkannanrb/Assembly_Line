@@ -1,9 +1,12 @@
 
 import { useState,useEffect, useContext, RefObject, ChangeEvent } from "react"
-import { Items,SetItems } from "../BentoGrid";
 import { Loader } from "../UtitliyComponents/Loader";
-import { getSASequence } from "../../API/getRecords";
+//API
+import { getSASequence } from "../../api/getRecords";
+//Types
 import { SASequence,ContextItems } from "../../types";
+//Contexts
+import { Items,SetItems } from "../../context/context";
 
 export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | null>}){
     const[data,setData]=useState<null | {"Stations":string[],"Items":[SASequence],}>(null);
@@ -35,10 +38,10 @@ export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | 
         const bin:Array<string[]>=new Array();
         data?.Items[0].Parts.forEach((ele)=>{
             if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value && ele.Type_field=="Individual Part"){
-                ele.Sequence_Required?individual.push([ele.Part_Name.Part_Name,ele.Sequence_Number,"in"]):individual.push([ele.Part_Name.Part_Name,"0","in"]);
+                ele.Sequence_Required=="Yes"?individual.push([ele.Part_Name.Part_Name,ele.Sequence_Number,"in"]):individual.push([ele.Part_Name.Part_Name,"0","in"]);
             }
             else if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value && ele.Type_field=="Bin Part"){
-                ele.Sequence_Required?bin.push([ele.Part_Name.Part_Name,ele.Sequence_Number,"bin"]):bin.push([ele.Part_Name.Part_Name,"0","bin"]);
+                ele.Sequence_Required=="Yes"?bin.push([ele.Part_Name.Part_Name,ele.Sequence_Number,"bin"]):bin.push([ele.Part_Name.Part_Name,"0","bin"]);
             };
         });
         // console.log(individual);

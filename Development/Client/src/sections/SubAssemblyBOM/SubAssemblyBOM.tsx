@@ -2,7 +2,8 @@
 import { ChangeEvent, RefObject, useContext, useRef} from "react";
 import { SubAssemblies } from "./SubAssemblies";
 import { Stations } from "./Stations";
-import { Items } from "../BentoGrid";
+//Contexts
+import { Items } from "../../context/context";
 
 export function SubAssemblyBOM(){
     const items=useContext(Items);
@@ -42,6 +43,7 @@ export function SubAssemblyBOM(){
         }
         const l:HTMLInputElement | null=document.querySelector("#lock");
         if(l)l.checked=true;
+        window.print();
     }
     
     return(

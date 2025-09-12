@@ -1,11 +1,15 @@
 
 import { useContext, useEffect,useState } from "react";
-import { Items } from "../BentoGrid";
 import { Loader } from "../UtitliyComponents/Loader";
+
+//Contexts
+import { Items } from "../../context/context";
+
 
 export function AssembleItems(){
     const items=useContext(Items);
     const[data,setData]=useState<Array<string[]> | null>(null);
+
     useEffect(()=>{
         const arr=new Array();
         items?.["Bin Parts"]?.forEach((ele)=>arr.push(ele));

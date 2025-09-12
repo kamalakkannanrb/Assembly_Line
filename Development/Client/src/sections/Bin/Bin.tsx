@@ -1,6 +1,8 @@
 
 import { useContext } from "react"
-import { Items } from "../BentoGrid"
+
+//Contexts
+import { Items } from "../../context/context";
 //Types
 import { ContextItems } from "../../types";
 
