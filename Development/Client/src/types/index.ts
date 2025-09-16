@@ -30,11 +30,17 @@ export interface SASequence{
     "Sub_Assembly_BOM_Prefix":string
 }
 
+export type parts={
+    "Name":string,
+    "Prefix":string | null,
+    "Sequence":string,
+    "Type":"in" | "bin"
+}
+
 export interface ContextItems{
     "Sub Assembly Name":string,
     "Sub Assembly ID":string,
     "Sub Assembly BOM Prefix":string,
     "Station":string,
-    "Individual Parts":Array<string[]>,
-    "Bin Parts":string[]
+    "Parts":parts[],
 }

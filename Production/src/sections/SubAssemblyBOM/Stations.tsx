@@ -4,14 +4,15 @@ import { Loader } from "../UtitliyComponents/Loader";
 //API
 import { getSASequence } from "../../api/getRecords";
 //Types
-import { SASequence,ContextItems } from "../../types";
+import { SASequence,ContextItems,parts } from "../../types";
 //Contexts
-import { Items,SetItems } from "../../context/context";
+import { Items,SetItems,SetCurrentItems } from "../../context/context";
 
 export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | null>}){
-    const[data,setData]=useState<null | {"Stations":string[],"Items":[SASequence],}>(null);
-    const setItems=useContext(SetItems);
+    const[data,setData]=useState<null | {"Stations":string[],"Items":[SASequence]}>(null);
     const items=useContext(Items);
+    const setItems=useContext(SetItems);
+    const setCurrentItems=useContext(SetCurrentItems)
     useEffect(()=>{
         setData(null);
         (async () => {
@@ -19,7 +20,7 @@ export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | 
             console.log(res);
             if(!res){
                 setData(null);
-                setItems(null);
+                setItems?setItems(null):"";
                 return;
             }
             const stations:string[]=[];
@@ -32,21 +33,30 @@ export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | 
         })();
     },[items?.["Sub Assembly ID"]])
 
-    
     function handleChange(e:ChangeEvent<HTMLSelectElement>){
-        const individual:Array<string[]>=new Array();
-        const bin:Array<string[]>=new Array();
+        setCurrentItems && setCurrentItems([])
+        const parts:parts[]=new Array<parts>();
         data?.Items[0].Parts.forEach((ele)=>{
             if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value && ele.Type_field=="Individual Part"){
-                ele.Sequence_Required=="Yes"?individual.push([ele.Part_Name.Part_Name,ele.Sequence_Number,"in"]):individual.push([ele.Part_Name.Part_Name,"0","in"]);
+                ele.Sequence_Required=="Yes"?parts.push({"Name":ele.Part_Name.Part_Name,"Prefix":ele.Traceability_Prefix,"Sequence":ele.Sequence_Number,"Type":"in"}):parts.push({"Name":ele.Part_Name.Part_Name,"Prefix":ele.Traceability_Prefix,"Sequence":data.Items[0].Parts.length.toString(),"Type":"in"});
             }
             else if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value && ele.Type_field=="Bin Part"){
-                ele.Sequence_Required=="Yes"?bin.push([ele.Part_Name.Part_Name,ele.Sequence_Number,"bin"]):bin.push([ele.Part_Name.Part_Name,"0","bin"]);
+                ele.Sequence_Required=="Yes"?parts.push({"Name":ele.Part_Name.Part_Name,"Prefix":null,"Sequence":ele.Sequence_Number,"Type":"bin"}):parts.push({"Name":ele.Part_Name.Part_Name,"Prefix":null,"Sequence":data.Items[0].Parts.length.toString(),"Type":"bin"});
             };
         });
-        // console.log(individual);
-        // console.log(bin);
-        setItems((pre:null | ContextItems)=>({...pre,"Station":e.target.value,"Individual Parts":individual,"Bin Parts":bin,"Sub Assembly BOM Prefix":data?.Items[0].Sub_Assembly_BOM_Prefix}));
+        console.log(parts);
+        parts.sort((a,b)=>(Number.parseInt(a.Sequence)-Number.parseInt(b.Sequence)));
+        if(data && setItems && parts){
+            
+            setItems((pre:ContextItems | null)=>{
+                if(pre!=null){
+                    return {...pre,"Station":e.target.value,"Parts":parts,"Sub Assembly BOM Prefix":data.Items[0].Sub_Assembly_BOM_Prefix}
+                }
+                else{
+                    return null;
+                }
+            });
+        }
     }
 
    if(data!=null){

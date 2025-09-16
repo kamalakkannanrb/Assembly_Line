@@ -1,5 +1,5 @@
 
-import { useContext, useEffect,useState } from "react";
+import { useContext} from "react";
 import { Loader } from "../UtitliyComponents/Loader";
 
 //Contexts
@@ -8,27 +8,27 @@ import { Items } from "../../context/context";
 
 export function AssembleItems(){
     const items=useContext(Items);
-    const[data,setData]=useState<Array<string[]> | null>(null);
+    // const[data,setData]=useState<Array<{"Name":string,"Prefix"?:string,"Sequence":string,"Type":"in" | "bin"}> | null>(null);
 
-    useEffect(()=>{
-        const arr=new Array();
-        items?.["Bin Parts"]?.forEach((ele)=>arr.push(ele));
-        items?.["Individual Parts"]?.forEach((ele)=>arr.push(ele));
-        if(arr.length==0){
-            setData(null);
-            return;
-        }
-        arr.sort((a,b)=>a[1]-b[1]);
-        setData(arr);
-        console.log(arr);
-    },[items?.["Bin Parts"],items?.["Individual Parts"]]);
+    // useEffect(()=>{
+    //     const arr=new Array();
+    //     items?.["Bin Parts"]?.forEach((ele)=>arr.push(ele));
+    //     items?.["Individual Parts"]?.forEach((ele)=>arr.push(ele));
+    //     if(arr.length==0){
+    //         setData(null);
+    //         return;
+    //     }
+    //     arr.sort((a,b)=>a.Sequence-b.Sequence);
+    //     setData(arr);
+    //     console.log(arr);
+    // },[items?.["Bin Parts"],items?.["Individual Parts"]]);
     
-    if(data){
+    if(items?.Parts){
         return(
             <>
                 <h1 className="font-bold">Assemble Items</h1>
                 <ol>
-                    {data.map((ele,index)=>(<li key={index} className={`text-center ${ele[2]=="bin"?"text-red-600":"text-green-600"}`}>{ele[0]}</li>))}
+                    {items.Parts.map((ele,index)=>(<li key={index} className={`text-center ${ele.Type=="bin"?"text-red-600":"text-green-600"}`}>{ele.Name} - {ele.Prefix}</li>))}
                 </ol>
             </>
         )

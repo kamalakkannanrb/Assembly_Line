@@ -1,11 +1,11 @@
 
-import { ChangeEvent, RefObject, useContext, useRef} from "react";
+import { ChangeEvent, RefObject, useContext, useRef, memo} from "react";
 import { SubAssemblies } from "./SubAssemblies";
 import { Stations } from "./Stations";
 //Contexts
 import { Items } from "../../context/context";
 
-export function SubAssemblyBOM(){
+export const SubAssemblyBOM=memo(()=>{
     const items=useContext(Items);
     const SARef:RefObject<HTMLSelectElement | null>=useRef(null);
     const stationRef:RefObject<HTMLSelectElement | null>=useRef(null);
@@ -56,4 +56,4 @@ export function SubAssemblyBOM(){
         </>
 
     )
-}
+});

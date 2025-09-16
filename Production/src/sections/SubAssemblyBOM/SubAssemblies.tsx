@@ -4,11 +4,12 @@ import { Loader } from "../UtitliyComponents/Loader";
 //API
 import { getSABOM } from "../../api/getRecords";
 //Contexts
-import { SetItems } from "../../context/context";
+import { SetItems,SetCurrentItems } from "../../context/context";
 
 export function SubAssemblies({SARef}:{SARef:RefObject<HTMLSelectElement | null>}){
     const[data,setData]=useState<null | [{"Part_Name":string,"ID":string,"Version":string}]>(null);
     const setItems=useContext(SetItems);
+    const setCurrentItems=useContext(SetCurrentItems);
     useEffect(()=>{
         (async () => {
             const res=await getSABOM();
@@ -17,7 +18,9 @@ export function SubAssemblies({SARef}:{SARef:RefObject<HTMLSelectElement | null>
     },[])
 
     function handleChange(e:ChangeEvent<HTMLSelectElement>){
-        setItems({"Sub Assembly ID":e.target.value.split("@")[0],"Sub Assembly Name":e.target.value.split("@")[1]});
+        setCurrentItems && setCurrentItems([]);
+        //@ts-ignore
+        setItems && setItems({"Sub Assembly ID":e.target.value.split("@")[0],"Sub Assembly Name":e.target.value.split("@")[1]});
     }
 
     if(data!=null){
