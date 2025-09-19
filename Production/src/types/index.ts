@@ -1,8 +1,8 @@
 
 export interface SASequence{
     "Status":"Active" | "Inactive",
-    "Parts":
-        [{
+    "Parts":[
+        {
             "Traceability": "Yes" | "No",
             "Type_field": "Bin Part" | "Individual Part",
             "Traceability_Prefix": string,
@@ -18,7 +18,8 @@ export interface SASequence{
                 "zc_display_value": string,
                 "Part_Number": string
             }
-        }],
+        }
+    ],
     "zc_display_value": string,
     "Sub_Assembly_BOM":
     {
@@ -30,11 +31,36 @@ export interface SASequence{
     "Sub_Assembly_BOM_Prefix":string
 }
 
+export interface Bin{
+    "Parts": [
+        {
+          "Part_Master": {
+            "Part_Name": string,
+            "ID": string,
+            "zc_display_value": string
+            },
+          "ID": string,
+          "QC_ID":string,
+          "zc_display_value": string
+        }
+    ],
+    "Bin": {
+    "Bin_ID": string,
+    "ID": string,
+    "zc_display_value": string
+    },
+    "BIN_ID": string,
+    "ID": string
+}
+
+
 export type parts={
     "Name":string,
+    "ID":string,
     "Prefix":string | null,
     "Sequence":string,
     "Type":"in" | "bin"
+    "QC":string 
 }
 
 export interface ContextItems{

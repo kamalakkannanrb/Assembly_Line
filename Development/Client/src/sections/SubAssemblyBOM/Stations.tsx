@@ -38,10 +38,10 @@ export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | 
         const parts:parts[]=new Array<parts>();
         data?.Items[0].Parts.forEach((ele)=>{
             if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value && ele.Type_field=="Individual Part"){
-                ele.Sequence_Required=="Yes"?parts.push({"Name":ele.Part_Name.Part_Name,"Prefix":ele.Traceability_Prefix,"Sequence":ele.Sequence_Number,"Type":"in"}):parts.push({"Name":ele.Part_Name.Part_Name,"Prefix":ele.Traceability_Prefix,"Sequence":data.Items[0].Parts.length.toString(),"Type":"in"});
+                ele.Sequence_Required=="Yes"?parts.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"Prefix":ele.Traceability_Prefix,"Sequence":ele.Sequence_Number,"QC":"","Type":"in"}):parts.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"Prefix":ele.Traceability_Prefix,"Sequence":data.Items[0].Parts.length.toString(),"QC":"","Type":"in"});
             }
             else if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value && ele.Type_field=="Bin Part"){
-                ele.Sequence_Required=="Yes"?parts.push({"Name":ele.Part_Name.Part_Name,"Prefix":null,"Sequence":ele.Sequence_Number,"Type":"bin"}):parts.push({"Name":ele.Part_Name.Part_Name,"Prefix":null,"Sequence":data.Items[0].Parts.length.toString(),"Type":"bin"});
+                ele.Sequence_Required=="Yes"?parts.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"Prefix":null,"Sequence":ele.Sequence_Number,"QC":"","Type":"bin"}):parts.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"Prefix":null,"Sequence":data.Items[0].Parts.length.toString(),"QC":"","Type":"bin"});
             };
         });
         console.log(parts);

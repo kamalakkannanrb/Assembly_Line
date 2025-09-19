@@ -36,6 +36,13 @@ app.get('/seq/:id',async(req,res)=>{
     res.send(response);
 });
 
+app.get('/bin/:id',async (req,res) => {
+    console.log(req.params?.id);
+    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/Bin_Floating_Data_API_Backend?criteria=BIN_ID="${req.params?.id}"`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+    res.send(response);
+})
+
+
 /*
 const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/All_SA_BOM_Masters`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e)); 
 res.send(response);

@@ -12,9 +12,10 @@ export function Bin(){
         <>
             <h1 className="font-bold text-center">Current Bin</h1>
             <ol>
-                {items?.Parts && items.Parts.map((ele,index)=>(<li key={index} className=" text-center text-red-600">{ele.Name}</li>))}
+                {items?.Parts && items.Parts.map((ele,index)=>{
+                    if(ele.Type=="bin")return(<li key={index} className=" text-center text-red-600">{ele.Name}</li>)
+                })}
             </ol>
-            <button className="text-center cursor-pointer border rounded-xl p-2 bg-red-300">Replace Bin</button>
         </>
     )
 }
