@@ -1,25 +1,30 @@
 
 import { ChangeEvent, useContext, useState } from "react";
 import { Toast } from "../UtitliyComponents/Toast";
+// import { PopUp } from "../UtitliyComponents/PopUp";
 
 //API
 import { getBin } from "../../api/getRecords";
+import { addSATraceability } from "../../api/addRecords";
 
 //Contexts
-import { Items,SetCurrentItems} from "../../context/context";
+import { Items,CurrentItems,SetCurrentItems} from "../../context/context";
 
 //Types
 // import { ContextItems } from "../../types";
+import { payload } from "../../types";
 
 export function Scanner(){
   const items=useContext(Items);
   // const setItems=useContext(SetItems);
+  const currentItems=useContext(CurrentItems);
   const setCurrentItems=useContext(SetCurrentItems);
   const[pointer,setPointer]=useState<number>(0);
   const[toast,setToast]=useState(false);
+  // const[popUp,setPopUp]=useState(false);
 
   async function handleChange(e:ChangeEvent<HTMLInputElement>){
-    if(items?.Parts[pointer].Prefix!=null && e.target.value.startsWith(items.Parts[pointer].Prefix)){
+    if(items?.Parts[pointer].Prefix!=null && e.target.value.trim().startsWith(items.Parts[pointer].Prefix)){
       // const part=[...items.Parts];
       // part[pointer].QC=e.target.value;
       // console.log(part);
@@ -33,14 +38,14 @@ export function Scanner(){
       // });
       // console.log("Triggered");
       const t=e.target.value;
-      setCurrentItems && setCurrentItems((pre)=>[...pre,{"Name":items.Parts[pointer].Name,"QC":t}]);
+      setCurrentItems && setCurrentItems((pre)=>[...pre,{"Name":items.Parts[pointer].Name,"ID":items.Parts[pointer].ID,"QC":t.trim()}]);
       setPointer((pre)=>pre+1);
       e.target.value=""
     }
     else if(items?.Parts[pointer].Prefix==null){
-      const data=await getBin(e.target.value);
+      const data=await getBin(e.target.value.trim());
       if(data && data?.[0].Parts[0].Part_Master.ID==items?.Parts[pointer].ID){
-        setCurrentItems && setCurrentItems((pre)=>[...pre,{"Name":items.Parts[pointer].Name,"QC":data[0].Parts[0].QC_ID}]);
+        setCurrentItems && setCurrentItems((pre)=>[...pre,{"Name":items.Parts[pointer].Name,"ID":items.Parts[pointer].ID,"QC":data[0].Parts[0].QC_ID}]);
         setPointer((pre)=>pre+1);
       }
       else{
@@ -55,11 +60,34 @@ export function Scanner(){
     
   }
 
+  async function handleSubmit(){
+    const label=document.getElementById("Sticker")?.innerText || "Default";
+    const parts=currentItems.map((ele)=>{
+      return {
+        //Should be Part ID
+        "Part_Name":ele.ID,
+        "QC_ID":ele.QC
+      }
+    })
+    const payload:payload= {
+    "data": [
+        {
+          "SA_Number": label,
+          "Parts":parts
+        }
+      ]
+    }
+    console.log(payload);
+    await addSATraceability(payload);
+  }
+
   return(
-    <div className="border">
-      <input type="text" placeholder="Scanner" className="text-center" key={items?.["Sub Assembly ID"]+""+items?.Station}
-      onChange={handleChange}></input>
+    <div className="flex flex-col">
+      {currentItems.length!=items?.Parts?.length && items?.Station && <input type="text" placeholder="Scanner" className="text-center border" key={items?.["Sub Assembly ID"]+""+items?.Station}
+      onChange={handleChange}></input>}
+      {currentItems.length==items?.Parts?.length && items.Parts?.length!=0 && <button className="mt-8 px-3 py-1 border rounded-2xl cursor-pointer" onClick={handleSubmit}>Submit</button>}
       {toast && <Toast message={"Wrong item scanned"} close={setToast}/>}
+      {/* {popUp && <PopUp/>} */}
     </div>
   )
 }

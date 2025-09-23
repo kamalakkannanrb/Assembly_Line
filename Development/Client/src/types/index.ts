@@ -70,3 +70,12 @@ export interface ContextItems{
     "Station":string,
     "Parts":parts[],
 }
+
+export type payload={
+    "data": [
+        {
+            "SA_Number": string,
+            "Parts":{"Part_Name": string,"QC_ID": string}[]
+        }
+    ]
+}

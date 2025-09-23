@@ -23,6 +23,8 @@ fetchAccessToken();
 setInterval(fetchAccessToken,1000*59*59);
 
 app.use(cors());
+app.use(express.json());
+
 
 app.get('/bom',async(req,res)=>{
     console.log("Requested");
@@ -40,6 +42,13 @@ app.get('/bin/:id',async (req,res) => {
     console.log(req.params?.id);
     const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/Bin_Floating_Data_API_Backend?criteria=BIN_ID="${req.params?.id}"`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e)); 
     res.send(response);
+})
+
+app.post('/trace',async(req,res)=>{
+    // console.log(req.body);
+    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/form/SA_Traceability_Report`,{method:"POST",headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+    console.log(response);
+    res.json({"status":"success"});
 })
 
 
