@@ -1,27 +1,30 @@
 
 import { ChangeEvent, useContext, useState } from "react";
 import { Toast } from "../UtitliyComponents/Toast";
-// import { PopUp } from "../UtitliyComponents/PopUp";
+import { PopUp } from "../UtitliyComponents/PopUp";
+import { Loading } from "../UtitliyComponents/Loading";
 
 //API
 import { getBin } from "../../api/getRecords";
 import { addSATraceability } from "../../api/addRecords";
 
 //Contexts
-import { Items,CurrentItems,SetCurrentItems} from "../../context/context";
+import { Items, CurrentItems, SetCurrentItems, SetItems} from "../../context/context";
 
 //Types
 // import { ContextItems } from "../../types";
 import { payload } from "../../types";
 
+
 export function Scanner(){
   const items=useContext(Items);
-  // const setItems=useContext(SetItems);
+  const setItems=useContext(SetItems);
   const currentItems=useContext(CurrentItems);
   const setCurrentItems=useContext(SetCurrentItems);
   const[pointer,setPointer]=useState<number>(0);
   const[toast,setToast]=useState(false);
-  // const[popUp,setPopUp]=useState(false);
+  const[popUp,setPopUp]=useState(false);
+  const[loading,setLoading]=useState(false);
 
   async function handleChange(e:ChangeEvent<HTMLInputElement>){
     if(items?.Parts[pointer].Prefix!=null && e.target.value.trim().startsWith(items.Parts[pointer].Prefix)){
@@ -61,6 +64,7 @@ export function Scanner(){
   }
 
   async function handleSubmit(){
+    setLoading(true);
     const label=document.getElementById("Sticker")?.innerText || "Default";
     const parts=currentItems.map((ele)=>{
       return {
@@ -79,15 +83,23 @@ export function Scanner(){
     }
     console.log(payload);
     await addSATraceability(payload);
+    setCurrentItems && setCurrentItems([]);
+    setItems && setItems(null);
+    setPointer(0);
+    setPopUp(true);
+    setLoading(false);
+    
   }
 
   return(
     <div className="flex flex-col">
-      {currentItems.length!=items?.Parts?.length && items?.Station && <input type="text" placeholder="Scanner" className="text-center border" key={items?.["Sub Assembly ID"]+""+items?.Station}
+      {currentItems.length!=items?.Parts?.length && items?.Station && <input type="text" placeholder="Scanner" className="text-center border rounded-2xl p-1 mt-5" key={items?.["Sub Assembly ID"]+""+items?.Station}
       onChange={handleChange}></input>}
-      {currentItems.length==items?.Parts?.length && items.Parts?.length!=0 && <button className="mt-8 px-3 py-1 border rounded-2xl cursor-pointer" onClick={handleSubmit}>Submit</button>}
+      {currentItems.length==items?.Parts?.length && items.Parts?.length!=0 && <button className="mt-8 px-3 py-1 border rounded-2xl cursor-pointer hover:bg-blue-200 hover:duration-200" onClick={handleSubmit}>Submit</button>}
+      {/* <button className="mt-8 px-3 py-1 border rounded-2xl cursor-pointer hover:bg-blue-200 hover:duration-200" onClick={handleSubmit}>Submit</button> */}
       {toast && <Toast message={"Wrong item scanned"} close={setToast}/>}
-      {/* {popUp && <PopUp/>} */}
+      {popUp && <PopUp close={setPopUp}/>}
+      {loading && <Loading/>}
     </div>
   )
 }

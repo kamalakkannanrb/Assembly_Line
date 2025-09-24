@@ -48,11 +48,11 @@ export const SubAssemblyBOM=memo(()=>{
     
     return(
         <>  
-            <h1 className="font-bold">Sub Assembly BOM</h1>
+            <h1 className="font-bold mb-2 text-2xl">Sub Assembly BOM</h1>
             <SubAssemblies SARef={SARef}/>
             {items?.["Sub Assembly ID"] && <Stations stationRef={stationRef}/>}
             {items?.Station && <label>Lock <input id="lock" type="checkbox" onChange={handleCheck}/></label>}
-            {items?.Station && <button className="p-2 border rounded-2xl bg-green-400" onClick={handleClick}>Print label</button>}
+            {items?.Station && <button className="p-2 border rounded-2xl bg-green-400 cursor-pointer" onClick={handleClick}>Print label</button>}
         </>
 
     )

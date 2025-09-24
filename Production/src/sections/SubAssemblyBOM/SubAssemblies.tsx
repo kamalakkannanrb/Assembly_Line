@@ -24,8 +24,10 @@ export function SubAssemblies({SARef}:{SARef:RefObject<HTMLSelectElement | null>
     }
 
     if(data!=null){
-        return(<select onChange={handleChange} ref={SARef}>
-            <option value="">Choose a Sub Assembly</option>
+        return(<select onChange={handleChange} ref={SARef} className="border rounded-3xl p-1.5 m-3 text-center 
+        hover:bg-blue-200 hover:duration-200 
+        focus:bg-blue-200">
+            <option value="" defaultChecked>Choose a Sub Assembly</option>
             {data?.map((ele,index)=><option key={index} value={ele.ID+"@"+ele.Part_Name}>{ele?.Part_Name} - {ele?.Version}</option>)}
         </select>)
     }

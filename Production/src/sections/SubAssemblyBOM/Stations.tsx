@@ -60,7 +60,9 @@ export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | 
     }
 
    if(data!=null){
-        return(<select onChange={handleChange} ref={stationRef}>
+        return(<select onChange={handleChange} ref={stationRef} className="border rounded-3xl p-1.5 text-center 
+        hover:bg-blue-200 hover:duration-200 
+        focus:bg-blue-200">
             <option value="" defaultChecked>Choose a Station</option>
             {data?.Stations.map((ele,index)=><option key={index}>{ele}</option>)}
         </select>)

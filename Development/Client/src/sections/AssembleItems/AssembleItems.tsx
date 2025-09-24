@@ -13,7 +13,7 @@ export function AssembleItems(){
     if(items?.Parts){
         return(
             <>
-                <h1 className="font-bold">Assemble Items</h1>
+                <h1 className="font-bold text-2xl mb-2">Assemble Items</h1>
                 <ol>
                     {items.Parts.map((ele,index)=>(<li key={index} className={`text-center ${ele.Type=="bin"?"text-red-600":"text-green-600"}`}>{ele.Name} - {ele.Prefix} - {currentItems[index]?.QC}</li>))}
                 </ol>
@@ -22,7 +22,7 @@ export function AssembleItems(){
     }
     return(
         <>
-            <h1 className="font-bold">Assemble Items</h1>
+            <h1 className="font-bold text-2xl mb-2">Assemble Items</h1>
             <Loader/>
         </>
     ) 

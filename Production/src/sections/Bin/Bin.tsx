@@ -10,7 +10,7 @@ export function Bin(){
     const items:ContextItems | null=useContext(Items);
     return(
         <>
-            <h1 className="font-bold text-center">Current Bin</h1>
+            <h1 className="font-bold text-center text-2xl mb-2">Current Bin</h1>
             <ol>
                 {items?.Parts && items.Parts.map((ele,index)=>{
                     if(ele.Type=="bin")return(<li key={index} className=" text-center text-red-600">{ele.Name}</li>)

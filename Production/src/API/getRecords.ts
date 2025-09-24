@@ -19,6 +19,7 @@ export async function getSASequence(id:string | undefined):Promise<[SASequence] 
     }
     //@ts-ignore
     const data=await ZOHO.CREATOR.DATA.getRecords(config).then(res=>JSON.stringify(res)).then(res=>JSON.parse(res)).catch(e=>console.error(e));
+    console.log(data);
     return data?.data?data.data:null;
 }
 
@@ -26,10 +27,11 @@ export async function getBin(id:string):Promise<[Bin]| null>{
     const config={
         report_name:"Bin_Floating_Data_API_Backend",
         max_records:1000,
-        criteria:`(BIN_ID=${id})`
+        criteria:`(BIN_ID="${id}")`
     }
     //@ts-ignore
     const data=await ZOHO.CREATOR.DATA.getRecords(config).then(res=>JSON.stringify(res)).then(res=>JSON.parse(res)).catch(e=>console.error(e));
+    console.log(data);
     return data?.data?data.data:null;
 }
 

@@ -24,7 +24,7 @@ export function BentoGrid(){
             <SetItems value={setStationData}>
               <ScannedItems>
                 <div className="h-full w-full overflow-auto flex flex-col justify-center items-center">
-                  {stationData?.["Sub Assembly Name"] && <h1 className="font-bold">{stationData?.["Sub Assembly Name"]}</h1>}
+                  {stationData?.["Sub Assembly Name"] && <h1 className="font-bold text-2xl mb-2">{stationData?.["Sub Assembly Name"]}</h1>}
                   {stationData?.["Sub Assembly BOM Prefix"] && <h1 id="Sticker">{stationData?.["Sub Assembly BOM Prefix"]+stationData?.Station+date.toLocaleDateString()+date.toLocaleTimeString()}</h1>}
                   <Scanner/>
                 </div>
