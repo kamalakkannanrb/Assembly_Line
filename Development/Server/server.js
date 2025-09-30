@@ -44,11 +44,23 @@ app.get('/bin/:id',async (req,res) => {
     res.send(response);
 })
 
-app.post('/trace',async(req,res)=>{
+app.post('/SATrace',async(req,res)=>{
     // console.log(req.body);
     const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/form/SA_Traceability_Report`,{method:"POST",headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
     console.log(response);
     res.json({"status":"success"});
+});
+
+app.get('/SATrace/:id', async(req,res)=>{
+    console.log(req.params?.id); 
+    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/All_SA_Traceability_Reports_API_Backend?criteria=SA_Traceability_ID="${req.params?.id}"`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+    res.send(response);
+});
+
+app.patch('/SATrace/:id',async(req,res)=>{
+    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/All_SA_Traceability_Reports_API_Backend/${req.params.id}`,{method:"PATCH",headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+    console.log(response);
+    res.send(response);
 })
 
 

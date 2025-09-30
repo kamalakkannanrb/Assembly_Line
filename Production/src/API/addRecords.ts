@@ -1,7 +1,7 @@
 
-import { payload } from "../types";
+import { addSAPayload } from "../types";
 
-export async function addSATraceability(payload:payload){
+export async function addSATraceability(payload:addSAPayload){
     const config={
         form_name:"SA_Traceability_Report",
         payload:payload

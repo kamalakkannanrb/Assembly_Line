@@ -1,5 +1,5 @@
 
-import { SASequence,Bin } from "../types";
+import { SASequence,Bin,SATraceability } from "../types";
 
 export async function getSABOM():Promise<[{"Part_Name":string,"ID":string,"Version":string}] | null>{
     const config={
@@ -28,6 +28,17 @@ export async function getBin(id:string):Promise<[Bin]| null>{
         report_name:"Bin_Floating_Data_API_Backend",
         max_records:1000,
         criteria:`(BIN_ID="${id}")`
+    }
+    //@ts-ignore
+    const data=await ZOHO.CREATOR.DATA.getRecords(config).then(res=>JSON.stringify(res)).then(res=>JSON.parse(res)).catch(e=>console.error(e));
+    console.log(data);
+    return data?.data?data.data:null;
+}
+
+export async function getSATraceability(id:string):Promise<[SATraceability] | null>{
+    const config={
+        report_name:"All_SA_Traceability_Reports_API_Backend",
+        criteria:`SA_Traceability_ID="${id}"`
     }
     //@ts-ignore
     const data=await ZOHO.CREATOR.DATA.getRecords(config).then(res=>JSON.stringify(res)).then(res=>JSON.parse(res)).catch(e=>console.error(e));

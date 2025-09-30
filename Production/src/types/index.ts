@@ -1,7 +1,7 @@
 
 export interface SASequence{
     "Status":"Active" | "Inactive",
-    "Parts":[
+    "Parts":
         {
             "Traceability": "Yes" | "No",
             "Type_field": "Bin Part" | "Individual Part",
@@ -18,9 +18,10 @@ export interface SASequence{
                 "zc_display_value": string,
                 "Part_Number": string
             }
-        }
-    ],
-    "zc_display_value": string,
+            "zc_display_value": string,
+            "Main_Station": "false" | "true"
+        }[]
+    ,
     "Sub_Assembly_BOM":
     {
         "Part_Name": string,
@@ -68,13 +69,44 @@ export interface ContextItems{
     "Sub Assembly ID":string,
     "Sub Assembly BOM Prefix":string,
     "Station":string,
+    "Main Station":"true" | "false",
     "Parts":parts[],
 }
 
-export type payload={
+export interface ContextCurrentItems{
+    "Already":{ "Name": string,"ID":string,"QC": string}[],
+    "Current":{ "Name": string,"ID":string,"QC": string}[],
+    "Pointer":number,
+    "ID":string
+}
+
+export type SATraceability={
+    "Parts":{
+        "ID": string,
+        "Part_Name": {
+            "Part_Name": string,
+            "ID": string,
+            "zc_display_value": string
+        },
+        "QC_ID": string,
+        "zc_display_value": string
+    }[],
+    "ID": string,
+    "SA_Traceability_ID": string
+}
+
+export type addSAPayload={
     "data": [
         {
-            "SA_Number": string,
+            "SA_Traceability_ID": string,
+            "Parts":{"Part_Name": string,"QC_ID": string}[]
+        }
+    ]
+}
+
+export type updateSAPayload={
+    "data":[
+        {
             "Parts":{"Part_Name": string,"QC_ID": string}[]
         }
     ]
