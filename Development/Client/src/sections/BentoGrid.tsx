@@ -4,7 +4,10 @@ import { SubAssemblyBOM } from "./SubAssemblyBOM/SubAssemblyBOM"
 import { AssembleItems } from "./AssembleItems/AssembleItems";
 import { Scanner } from "./Scanner/Scanner"
 import { Bin } from "./Bin/Bin";
-
+import { Submit } from "./Scanner/Submit";
+import { Activity } from "./Activity/Activity";
+import { NextItemBar } from "./NextItemBar/NextItemBar";
+import { Progress } from "./Progress/Progress";
 
 //Types
 import { ContextItems } from "../types";
@@ -23,24 +26,26 @@ export function BentoGrid(){
         <>
           <Items value={stationData}>
             <SetItems value={setStationData}>
-              <ScannedItems>
-                <SubAssemblyBOM/>
-                <div className="relative w-full h-screen grid grid-cols-2 grid-rows-2 place-items-center bg-gray-50">
-                  <div className="h-full w-full overflow-auto flex flex-col justify-center items-center gap-5">
-                  {stationData?.["Sub Assembly Name"] && <h1 className="font-bold text-2xl mb-2">{stationData?.["Sub Assembly Name"]}</h1>}
-                  {stationData?.["Sub Assembly BOM Prefix"] && <h1 id="Sticker">{stationData?.["Sub Assembly BOM Prefix"]+date.toLocaleDateString()+date.toLocaleTimeString()}</h1>}
-                  <Scanner/>
-                </div>
-                <div className="h-full w-full overflow-auto flex flex-col justify-center items-center">
-                  <Bin/>
-                </div>
-                <div className="h-full w-full overflow-auto flex flex-col justify-center items-center">
-                  <AssembleItems/>
-                </div>
-                <div className="h-full w-full overflow-auto flex flex-col justify-center items-center">
-                </div>
-                </div>
-              </ScannedItems>
+                <ScannedItems>
+                  <SubAssemblyBOM/>
+                  <div className="p-5 lg:px-16">
+                    <div className="w-full h-48 flex justify-center gap-5">
+                      <Progress/>
+                      <Scanner/>
+                      <div className="TopBoxes flex flex-col justify-start items-center gap-2">
+                        {stationData?.["Sub Assembly Name"] && <h1 className="text-center font-bold text-2xl">{stationData?.["Sub Assembly Name"]}</h1>}
+                        {stationData?.["Sub Assembly BOM Prefix"] && <h1 id="Sticker" className="text-center">{stationData?.["Sub Assembly BOM Prefix"]+date.toLocaleDateString()+date.toLocaleTimeString()}</h1>}
+                        <Submit/>
+                      </div>
+                    </div>
+                    <NextItemBar/>
+                    <div className="w-full mt-4 flex justify-center gap-5">
+                      <AssembleItems/>
+                      <Bin/>
+                      <Activity/>
+                    </div>
+                  </div>
+                </ScannedItems>
             </SetItems>
           </Items>
         </>

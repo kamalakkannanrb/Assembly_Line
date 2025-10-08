@@ -17,7 +17,7 @@ export function PopUp({close}:{close:Dispatch<SetStateAction<boolean>>}){
         }
     },[])
     return(
-        <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black/50">
+        <div className="fixed top-0 left-0 z-20 w-screen h-screen flex justify-center items-center bg-black/50">
             <div className="relative w-1/3 h-1/3 flex flex-col justify-center items-center border rounded-4xl bg-white">
                 <h1 className="absolute top-4 right-5 font-bold">{time}</h1>
                 <h1 className="text-green-700 text-4xl text-center">Data submitted</h1>
