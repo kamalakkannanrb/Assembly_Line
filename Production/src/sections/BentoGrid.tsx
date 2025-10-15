@@ -3,7 +3,7 @@ import { useState } from "react";
 import { SubAssemblyBOM } from "./SubAssemblyBOM/SubAssemblyBOM"
 import { AssembleItems } from "./AssembleItems/AssembleItems";
 import { Scanner } from "./Scanner/Scanner"
-import { Bin } from "./Bin/Bin";
+// import { Bin } from "./Bin/Bin";
 import { Submit } from "./Scanner/Submit";
 import { Activity } from "./Activity/Activity";
 import { NextItemBar } from "./NextItemBar/NextItemBar";
@@ -41,7 +41,7 @@ export function BentoGrid(){
                     <NextItemBar/>
                     <div className="w-full mt-4 flex justify-center gap-5">
                       <AssembleItems/>
-                      <Bin/>
+                      {/* <Bin/> */}
                       <Activity/>
                     </div>
                   </div>

@@ -1,19 +1,23 @@
 
-import { ChangeEvent, Dispatch, SetStateAction, useContext,useEffect,useState } from "react";
+import { ChangeEvent, useContext,useEffect,useState } from "react";
 import { Toast } from "./Toast";
 
 //Contexts
-import { SetCurrentItems } from "../../context/context";
+import { SetItems, SetCurrentItems } from "../../context/context";
 
 //API
 import { getSATraceability } from "../../api/getRecords";
 
-export function InitiateScan({setScan}:{setScan:Dispatch<SetStateAction<boolean>>}){
+//Types
+import { ContextItems } from "../../types";
+
+export function InitiateScan(){
     useEffect(()=>{
         const scan=document.getElementById("InitiateScan");
         scan && scan.focus();
     },[])
     const[toast,setToast]=useState(false);    
+    const setItems=useContext(SetItems);
     const setCurrentItems=useContext(SetCurrentItems);
 
     async function handleChange(e:ChangeEvent<HTMLInputElement>){
@@ -27,7 +31,14 @@ export function InitiateScan({setScan}:{setScan:Dispatch<SetStateAction<boolean>
             const scanner=document.getElementById("Scanner");
             if(sticker)sticker.innerText=e.target.value.trim();
             if(scanner)scanner.focus();
-            setScan(false);
+            setItems && setItems((pre:ContextItems | null)=>{
+                if(pre!=null){
+                    return {...pre,"Main Station":"null"}
+                }
+                else{
+                    return null;
+                }
+            });
         }
         else{
             setToast(true);

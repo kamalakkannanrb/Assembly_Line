@@ -29,6 +29,12 @@ app.use(express.json());
 app.get('/bom',async(req,res)=>{
     console.log("Requested");
     const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/Sub_Assembly_BOM_Report_API_Backend`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e));
+    // const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/Sub_Assembly_BOM_Report_API_Backend`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}})
+    // .then(async res=>{
+    //     const r=await res.json();
+    //     return r;
+    // })
+    // .catch(e=>console.log(e));
     res.send(response);
 });
 
@@ -62,6 +68,20 @@ app.patch('/SATrace/:id',async(req,res)=>{
     console.log(response);
     res.send(response);
 })
+
+app.get('/QC/:id',async(req,res)=>{
+    console.log(req.params?.id);
+    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/QC_Report?criteria=QC_ID="${req.params.id}"`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+    // console.log(response);
+    res.send(response);
+})
+
+app.post('/errorLog',async(req,res)=>{
+    // console.log(req.body);
+    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/form/ErrorLog`,{method:"POST",headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+    console.log(response);
+    res.json({"status":"success"});
+});
 
 
 /*

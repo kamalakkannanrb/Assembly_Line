@@ -49,6 +49,7 @@ export function Submit(){
       await addSATraceability({
         "data":[
           {
+            "Sub_Assembly_BOM":items["Sub Assembly ID"],
             "SA_Traceability_ID": label,
             "Parts":parts
           }

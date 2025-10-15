@@ -7,7 +7,7 @@ import { Items,CurrentItems } from "../../context/context"
 export function Progress(){
     const items=useContext(Items);
     const currentItems=useContext(CurrentItems);
-    const progressPercent=items?.Parts?(currentItems.Current.length/items?.Parts.length)*100:0;
+    const progressPercent=items?.Parts && items.Parts.length>0?(currentItems.Current.length/items?.Parts.length)*100:0;
     const progressNumberNominator=currentItems.Current.length;
     const progressNumberDenominator=items?.Parts?items.Parts.length:0;
     return(
