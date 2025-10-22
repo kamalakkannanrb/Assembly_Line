@@ -27,6 +27,7 @@ export function addActivity(arg:params){
     span1.className=nodes[arg.code].span1;
     const p=document.createElement('p');
     p.className=nodes[arg.code].p;
+    p.style.wordBreak="break-word"
     if(arg.code=="success"){
         p.innerText=arg.text+" scanned"
     }

@@ -8,48 +8,48 @@ import { addSATraceability } from "../../api/addRecords";
 import { updateSATraceability } from "../../api/updateRecords";
 
 //Context
-import { Items,SetItems,CurrentItems,SetCurrentItems } from "../../context/context"
+import { MasterContext, SetMasterContext, ScannedContext, SetScannedContext } from "../../context/context"
 
 //UtilityFunctions
 import { clearActivity } from "../../utilityFunctions/activityLog";
 
 export function Submit(){
-    const items=useContext(Items);
-    const setItems=useContext(SetItems);
-    const currentItems=useContext(CurrentItems);
-    const setCurrentItems=useContext(SetCurrentItems);
+    const master=useContext(MasterContext);
+    const setMaster=useContext(SetMasterContext);
+    const scanned=useContext(ScannedContext);
+    const setScanned=useContext(SetScannedContext);
     const[loading,setLoading]=useState(false);
     const[popUp,setPopUp]=useState(false);
 
     async function handleSubmit(){
     setLoading(true);
     const label=(document.getElementById("Sticker")?.innerText || "Default").trim();
-    const parts:{"Part_Name":string,"QC_ID":string}[]=[];
-    currentItems.Already.forEach((ele)=>{
+    const parts:{"Part_Name":string,"QC_ID":string[]}[]=[];
+    scanned.Already.forEach((ele)=>{
       parts.push(
         {
           //Should be Part ID
           "Part_Name":ele.ID,
-          "QC_ID":ele.QC
+          "QC_ID":[ele.QC[0]]
         }
       )
     })
-    currentItems.Current.forEach((ele)=>{
+    scanned.Current.forEach((ele)=>{
       parts.push(
         {
           //Should be Part ID
           "Part_Name":ele.ID,
-          "QC_ID":ele.QC
+          "QC_ID":[ele.QC[0]]
         }
       )
     })
     
     // console.log(payload);
-    if(items?.["Main Station"]=="true"){
+    if(master?.["Main Station"]=="true"){
       await addSATraceability({
         "data":[
           {
-            "Sub_Assembly_BOM":items["Sub Assembly ID"],
+            "Sub_Assembly_BOM":master["Sub Assembly ID"]?master["Sub Assembly ID"]:"",
             "SA_Traceability_ID": label,
             "Parts":parts
           }
@@ -63,11 +63,17 @@ export function Submit(){
             "Parts":parts
           }
         ]
-      },currentItems.ID);
+      },scanned.ID);
     }
    
-    setCurrentItems && setCurrentItems({"Already":[],"Current":[],"Pointer":0,"ID":""});
-    setItems && setItems(null);
+    // setScanned && setScanned({"Already":[],"Current":[],"Pointer":0,"ID":""});
+
+    setScanned && setScanned({type:"Reset"});
+
+    // setMaster && setMaster(null);
+
+    setMaster && setMaster({type:"Reset"});
+
     clearActivity();
     setPopUp(true);
     setLoading(false);
@@ -76,7 +82,7 @@ export function Submit(){
 
     return(
         <div>
-            {currentItems.Current.length==items?.Parts?.length && items.Parts?.length!=0 && <button className="p-3 border-0 bg-gray-100 rounded-2xl cursor-pointer hover:bg-green-300 hover:duration-200" onClick={handleSubmit}>Submit</button>}
+            {scanned.Current.length==master?.Parts?.length && master.Parts?.length!=0 && <button className="p-3 border-0 bg-gray-100 rounded-2xl cursor-pointer hover:bg-green-300 hover:duration-200" onClick={handleSubmit}>Submit</button>}
             {popUp && <PopUp close={setPopUp}/>}
             {loading && <Loading/>}
         </div>

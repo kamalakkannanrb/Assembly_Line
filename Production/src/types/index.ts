@@ -55,48 +55,59 @@ export interface Bin{
 
 export type parts={
     "Name":string,
+    "Quantity":string,
     "ID":string,
     "Sequence":string,
-    "QC":string 
 }
 
-export interface ContextItems{
-    "Sub Assembly Name":string,
-    "Sub Assembly ID":string,
-    "Sub Assembly BOM Prefix":string,
-    "Station":string,
-    "Main Station":"true" | "false" | "null",
-    "Parts":parts[],
+export interface MasterType{
+    "Sub Assembly Name":string | null,
+    "Sub Assembly ID":string | null,
+    "Sub Assembly BOM Prefix":string | null,
+    "Station":string | null,
+    "Main Station":"true" | "false" | null,
+    "Parts":parts[] | null,
+    "Main Line":string | null,
 }
 
-export interface ContextCurrentItems{
-    "Already":{ "Name": string,"ID":string,"QC": string}[],
-    "Current":{ "Name": string,"ID":string,"QC": string}[],
+export interface ScannedType{
+    "Already":{ "Name": string,"ID":string,"QC": string[],"QC_ID":string[]}[],
+    "Current":{ "Name": string,"ID":string,"QC": string[],"QC_ID":string[]}[],
     "Pointer":number,
     "ID":string
 }
 
 export type SATraceability={
-    "Parts":{
-        "ID": string,
-        "Part_Name": {
-            "Part_Name": string,
+    "Parts": {
             "ID": string,
-            "zc_display_value": string
-        },
-        "QC_ID": string,
-        "zc_display_value": string
+            "Part_Name": {
+                "Part_Name": string,
+                "ID": string,
+                "zc_display_value": string
+            },
+            "QC_ID":{
+                    "ID": string,
+                    "QC_ID": string,
+                    "zc_display_value":string
+            }[],
+            "zc_display_value":string
     }[],
+    "Sub_Assembly_BOM": {
+        "Part_Name": string,
+        "ID": string,
+        "zc_display_value":string
+    },
     "ID": string,
-    "SA_Traceability_ID": string
+    "SA_Traceability_ID":string
 }
+
 
 export type addSAPayload={
     "data": [
         {
             "Sub_Assembly_BOM":string
             "SA_Traceability_ID": string,
-            "Parts":{"Part_Name": string,"QC_ID": string}[]
+            "Parts":{"Part_Name": string,"QC_ID": string[]}[]
         }
     ]
 }
@@ -104,7 +115,7 @@ export type addSAPayload={
 export type updateSAPayload={
     "data":[
         {
-            "Parts":{"Part_Name": string,"QC_ID": string}[]
+            "Parts":{"Part_Name": string,"QC_ID": string[]}[]
         }
     ]
 }

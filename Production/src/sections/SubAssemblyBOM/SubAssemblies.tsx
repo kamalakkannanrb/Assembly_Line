@@ -4,12 +4,12 @@ import { Loader } from "../UtitliyComponents/Loader";
 //API
 import { getSABOM } from "../../api/getRecords";
 //Contexts
-import { SetItems,SetCurrentItems } from "../../context/context";
+import { SetMasterContext, SetScannedContext } from "../../context/context";
 
 export function SubAssemblies({SARef}:{SARef:RefObject<HTMLSelectElement | null>}){
     const[data,setData]=useState<null | {"Part_Name":string,"ID":string,"Version":string}[]>(null);
-    const setItems=useContext(SetItems);
-    const setCurrentItems=useContext(SetCurrentItems);
+    const setMaster=useContext(SetMasterContext);
+    const setScanned=useContext(SetScannedContext);
     useEffect(()=>{
         (async () => {
             const res=await getSABOM();
@@ -18,9 +18,11 @@ export function SubAssemblies({SARef}:{SARef:RefObject<HTMLSelectElement | null>
     },[])
 
     function handleChange(e:ChangeEvent<HTMLSelectElement>){
-        setCurrentItems && setCurrentItems({"Already":[],"Current":[],"Pointer":0,"ID":""});
-        // @ts-ignore
-        setItems && setItems({"Sub Assembly ID":e.target.value.split("@")[0],"Sub Assembly Name":e.target.value.split("@")[1]});
+        // setScanned && setScanned({"Already":[],"Current":[],"Pointer":0,"ID":""});
+        setScanned && setScanned({type:"Reset"})
+        
+        // setMaster && setMaster({"Sub Assembly ID":e.target.value.split("@")[0],"Sub Assembly Name":e.target.value.split("@")[1],"Main Line":null});
+        setMaster && setMaster({type:"Set_SA_Name_ID",data:{"Sub Assembly ID":e.target.value.split("@")[0],"Sub Assembly Name":e.target.value.split("@")[1]}})
     }
 
     if(data!=null){

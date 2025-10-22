@@ -2,14 +2,14 @@
 import { useContext } from "react"
 
 //Contexts
-import { Items,CurrentItems } from "../../context/context"
+import { MasterContext, ScannedContext } from "../../context/context"
 
 export function Progress(){
-    const items=useContext(Items);
-    const currentItems=useContext(CurrentItems);
-    const progressPercent=items?.Parts && items.Parts.length>0?(currentItems.Current.length/items?.Parts.length)*100:0;
-    const progressNumberNominator=currentItems.Current.length;
-    const progressNumberDenominator=items?.Parts?items.Parts.length:0;
+    const master=useContext(MasterContext);
+    const scanned=useContext(ScannedContext);
+    const progressPercent=master?.Parts && master.Parts.length>0?(scanned.Current.length/master?.Parts.length)*100:0;
+    const progressNumberNominator=scanned.Current.length;
+    const progressNumberDenominator=master?.Parts?master.Parts.length:0;
     return(
         <div className="TopBoxes">
             <h1 className="text-center font-bold text-2xl">Progress</h1>

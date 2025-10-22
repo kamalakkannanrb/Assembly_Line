@@ -69,8 +69,8 @@ export async function getSATraceability(id:string):Promise<[SATraceability] | nu
 }
 
 export async function getQC(id:string){
-     const config={
-        report_name:"QC_Report",
+    const config={
+        report_name:"Super_Market_Master_Report",
         criteria:`QC_ID="${id}"`
     }
     //@ts-ignore

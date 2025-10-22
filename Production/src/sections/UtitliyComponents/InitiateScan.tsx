@@ -1,15 +1,13 @@
 
-import { ChangeEvent, useContext,useEffect,useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { Toast } from "./Toast";
 
 //Contexts
-import { SetItems, SetCurrentItems } from "../../context/context";
+import { SetMasterContext, SetScannedContext } from "../../context/context";
 
 //API
 import { getSATraceability } from "../../api/getRecords";
 
-//Types
-import { ContextItems } from "../../types";
 
 export function InitiateScan(){
     useEffect(()=>{
@@ -17,28 +15,36 @@ export function InitiateScan(){
         scan && scan.focus();
     },[])
     const[toast,setToast]=useState(false);    
-    const setItems=useContext(SetItems);
-    const setCurrentItems=useContext(SetCurrentItems);
+    const setMaster=useContext(SetMasterContext);
+    const setScanned=useContext(SetScannedContext);
 
     async function handleChange(e:ChangeEvent<HTMLInputElement>){
         const data=await getSATraceability(encodeURIComponent(e.target.value.trim()));
         console.log(data);
         if(data){
-            const arr:{ "Name": string,"ID":string,"QC": string}[]=[];
-            data?.[0].Parts.forEach((ele)=>arr.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"QC":ele.QC_ID}))
-            setCurrentItems && setCurrentItems({"Already":arr,"Current":[],"Pointer":0,"ID":data?.[0].ID});
+            const arr:{ "Name": string,"ID":string,"QC": string[],"QC_ID":string[]}[]=[];
+            data?.[0].Parts.forEach((ele)=>arr.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"QC":[ele.QC_ID[0].ID],"QC_ID":[ele.QC_ID[0].QC_ID]}))
+
+            // setScanned && setScanned({"Already":arr,"Current":[],"Pointer":0,"ID":data?.[0].ID});
+
+            setScanned && setScanned({type:"Set_Already",data:{"Already":arr,"Current":[],"Pointer":0,"ID":data?.[0].ID}})
+
             const sticker=document.getElementById("Sticker");
             const scanner=document.getElementById("Scanner");
             if(sticker)sticker.innerText=e.target.value.trim();
             if(scanner)scanner.focus();
-            setItems && setItems((pre:ContextItems | null)=>{
-                if(pre!=null){
-                    return {...pre,"Main Station":"null"}
-                }
-                else{
-                    return null;
-                }
-            });
+
+            // setMaster && setMaster((pre:ContextItems | null)=>{
+            //     if(pre!=null){
+            //         return {...pre,"Main Station":"null"}
+            //     }
+            //     else{
+            //         return null;
+            //     }
+            // });
+
+            setMaster && setMaster({type:"Make_Main_Staion_Null"})
+
         }
         else{
             setToast(true);

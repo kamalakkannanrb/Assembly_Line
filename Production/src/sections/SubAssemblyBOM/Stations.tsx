@@ -6,24 +6,24 @@ import { Loader } from "../UtitliyComponents/Loader";
 import { getSASequence } from "../../api/getRecords";
 
 //Types
-import { SASequence,ContextItems,parts } from "../../types";
+import { SASequence, parts } from "../../types";
 
 //Contexts
-import { Items,SetItems,SetCurrentItems } from "../../context/context";
+import { MasterContext, SetMasterContext, SetScannedContext } from "../../context/context";
 
 export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | null>}){
     const[data,setData]=useState<null | {"Stations":string[],"Main Station":string,"Items":[SASequence]}>(null);
-    const items=useContext(Items);
-    const setItems=useContext(SetItems);
-    const setCurrentItems=useContext(SetCurrentItems)
+    const master=useContext(MasterContext);
+    const setMaster=useContext(SetMasterContext);
+    const setScanned=useContext(SetScannedContext)
     useEffect(()=>{
         setData(null);
         (async () => {
-            const res=await getSASequence(items?.["Sub Assembly ID"]);
+            const res=master["Sub Assembly ID"]?await getSASequence(master?.["Sub Assembly ID"]):null;
             console.log(res);
             if(!res){
                 setData(null);
-                setItems && setItems(null);
+                setMaster && setMaster({type:"Reset"});
                 return;
             }
             const stations:string[]=[];
@@ -38,27 +38,36 @@ export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | 
             stations.sort();
             setData({"Items":res,"Main Station":main,"Stations":stations})
         })();
-    },[items?.["Sub Assembly ID"]])
+    },[master?.["Sub Assembly ID"]])
 
     function handleChange(e:ChangeEvent<HTMLSelectElement>){
-        setCurrentItems && setCurrentItems({"Already":[],"Current":[],"Pointer":0,"ID":""})
+
+        // setScanned && setScanned({"Already":[],"Current":[],"Pointer":0,"ID":""})
+        
+        setScanned && setScanned({type:"Reset"})
         const parts:parts[]=new Array<parts>();
         data?.Items[0].Parts.forEach((ele)=>{
             if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value){
-                ele.Sequence_Required=="Yes"?parts.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"Sequence":ele.Sequence_Number,"QC":""}):parts.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"Sequence":data.Items[0].Parts.length.toString(),"QC":""});
+                ele.Sequence_Required=="Yes"?parts.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"Quantity":ele.Quantity,"Sequence":ele.Sequence_Number}):parts.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"Quantity":ele.Quantity,"Sequence":data.Items[0].Parts.length.toString()});
             };
         });
-        console.log(parts);
+        console.log(e.target.value.length);
         parts.sort((a,b)=>(Number.parseInt(a.Sequence)-Number.parseInt(b.Sequence)));
-        // data && data["Main Station"]!=e.target.value && e.target.value!=""?setScan(true):setScan(false);
-        data && setItems && parts && setItems((pre:ContextItems | null)=>{
-            if(pre!=null){
-                return {...pre,"Station":e.target.value,"Parts":parts,"Main Station":data["Main Station"]==e.target.value?"true":"false","Sub Assembly BOM Prefix":data.Items[0].Sub_Assembly_BOM_Prefix}
-            }
-            else{
-                return null;
-            }
-        });
+       
+        // data && parts && setMaster && setMaster((pre:ContextItems | null)=>{
+        //     if(pre!=null){
+        //         return {...pre,"Station":e.target.value,"Parts":parts,"Main Station":data["Main Station"]==e.target.value?"true":e.target.value.length==0?"null":"false","Sub Assembly BOM Prefix":data.Items[0].Sub_Assembly_BOM_Prefix}
+        //     }
+        //     else{
+        //         return null;
+        //     }
+        // });
+
+        data && parts && setMaster && setMaster({
+            type:"Set_Station_Parts",
+            data:{"Station":e.target.value,"Parts":parts,"Main Station":data["Main Station"]==e.target.value?"true":e.target.value.length==0?null:"false","Sub Assembly BOM Prefix":data.Items[0].Sub_Assembly_BOM_Prefix}
+        })
+
     }
 
    if(data!=null){
