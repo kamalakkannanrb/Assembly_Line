@@ -83,6 +83,14 @@ app.get('/VIN/:id',async(req,res)=>{
     res.send(response);
 })
 
+app.post('/redtag',async(req,res)=>{
+    // console.log(req.body);
+    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/form/Red_Tag`,{method:"POST",headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+    console.log(response);
+    res.json({"status":"success"});
+});
+
+
 app.post('/errorLog',async(req,res)=>{
     // console.log(req.body);
     const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/form/ErrorLog`,{method:"POST",headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 

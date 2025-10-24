@@ -19,7 +19,8 @@ export function InitiateScan(){
     const setScanned=useContext(SetScannedContext);
 
     async function handleChange(e:ChangeEvent<HTMLInputElement>){
-        const data=await getSATraceability(encodeURIComponent(e.target.value.trim()));
+        
+        const data=await getSATraceability(e.target.value.trim());
         console.log(data);
         if(data){
             const arr:{ "Name": string,"ID":string,"QC": string[],"QC_ID":string[]}[]=[];

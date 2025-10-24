@@ -24,8 +24,9 @@ export async function getBin(id:string):Promise<[Bin]| null>{
     return data?.data?data.data:null;
 }
 
-export async function getSATraceability(id:string):Promise<[SATraceability] | null>{
-    const data=await fetch(`http://127.0.0.1:3000/SATrace/${id}`).then((res)=>res.json()).catch(e=>console.error(e));
+export async function getSATraceability(stikcer:string):Promise<[SATraceability] | null>{
+    const id=encodeURIComponent(stikcer);
+    const data=await fetch(`http://127.0.0.1:3000/SATrace/${id}`,{}).then((res)=>res.json()).catch(e=>console.error(e));
     return data?.data?data.data:null;
 }
 

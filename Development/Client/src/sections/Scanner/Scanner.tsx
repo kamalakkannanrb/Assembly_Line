@@ -51,10 +51,10 @@ export function Scanner(){
           data:{"Name":master.Parts[scanned.Pointer].Name,"ID":master.Parts[scanned.Pointer].ID,"QC":[data?.[0].ID],"QC_ID":[data?.[0].QC_ID]}
         })
 
-        addActivity({code:"success",text:master.Parts[scanned.Pointer].Name});
+        addActivity({code:"success",text:master.Parts[scanned.Pointer].Name+" scanned"});
       }
       else{
-        addActivity({code:"fail",text:e.target.value});
+        addActivity({code:"fail",text:e.target.value+" wrong part"});
         setToast(true);
       } 
     }

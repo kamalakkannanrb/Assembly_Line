@@ -1,9 +1,9 @@
 
-
 import { SubAssemblyBOM } from "./SubAssemblyBOM/SubAssemblyBOM"
 import { AssembleItems } from "./AssembleItems/AssembleItems";
 import { Scanner } from "./Scanner/Scanner"
 import { SubAssemblyInfo } from "./SubAssemblyInfo/SubAssemblyInfo";
+import { RedTag } from "./RedTag/RedTag";
 // import { Bin } from "./Bin/Bin";
 import { Submit } from "./Scanner/Submit";
 import { Activity } from "./Activity/Activity";
@@ -24,6 +24,7 @@ export function BentoGrid(){
           <Master>
             <Scanned>
                   <MainLine/>
+                  <RedTag/>
                   <SubAssemblyBOM/>
                   <div className="p-5 lg:px-16">
                     <div className="w-full h-48 flex justify-center gap-5">
