@@ -1,4 +1,18 @@
 
+
+/*
+
+.env file
+
+account_owner_name=""
+app_link_name=""
+client_id=""
+client_secret=""
+refresh_token=""
+
+*/
+
+
 const express=require('express');
 const dotenv=require('dotenv');
 const cors=require('cors');
