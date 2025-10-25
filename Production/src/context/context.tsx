@@ -12,6 +12,7 @@ export const MasterContext=createContext<MasterType>({
     "Main Station":null,
     "Parts":null,
     "Main Line":null,
+    "Red Tag":false
 });
 export const SetMasterContext=createContext<Dispatch<MasterActionType> | null>(null);
 export const ScannedContext=createContext<ScannedType>({"Already":[],"Current":[],"Pointer":0,"ID":""});
@@ -24,6 +25,8 @@ type MasterActionType=
     | {type:"Make_Main_Staion_Null"}
     | {type:"Enable_Main_Line",data:string}
     | {type:"Diable_Main_Line"}
+    | {type:"Enable_Red_Tag"}
+    | {type:"Disable_Red_Tag"}
 
 
 function masterReducer(state:MasterType,action:MasterActionType):MasterType{
@@ -36,6 +39,7 @@ function masterReducer(state:MasterType,action:MasterActionType):MasterType{
             "Main Station":null,
             "Parts":null,
             "Main Line":null,
+            "Red Tag":false
         }
         
         case "Set_SA_Name_ID":{
@@ -46,6 +50,7 @@ function masterReducer(state:MasterType,action:MasterActionType):MasterType{
                 "Main Station":null,
                 "Parts":null,
                 "Main Line":null,
+                "Red Tag":false
             }
         }
 
@@ -71,6 +76,16 @@ function masterReducer(state:MasterType,action:MasterActionType):MasterType{
             "Main Line":null
         }
 
+        case "Enable_Red_Tag":return{
+            ...state,
+            "Red Tag":true
+        }
+
+        case "Disable_Red_Tag":return{
+            ...state,
+            "Red Tag":false
+        }
+        
         default:
             return state;
     }
@@ -86,6 +101,7 @@ export function Master({children}:{children:ReactNode}){
         "Main Station":null,
         "Parts":null,
         "Main Line":null,
+        "Red Tag":false
     });
 
     return(

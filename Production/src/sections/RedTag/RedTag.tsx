@@ -36,10 +36,10 @@ export function RedTag(){
     }
     if(master["Red Tag"]){
         return(
-            <div className="fixed h-[70vh] w-[20vw] top-25 right-0 z-20 border border-red-300 rounded-l-4xl shadow-xl/80 shadow-red-400 bg-red-300 animate-slide-left">
+            <div className="fixed h-screen w-screen top-0 left-0 z-20 bg-red-300 animate-slideRight">
                 {/* <span className="absolute -left-3.5 top-[43%] hover:scale-115"><svg xmlns="http://www.w3.org/2000/svg" height="30px" width="30px" viewBox="0 -960 960 960" fill="#fb2c36"><path d="M384-96 0-480l384-384 68 68-316 316 316 316-68 68Z"/></svg></span> */}
-                <span className="absolute right-5 top-5 bg-white p-2 rounded-2xl cursor-pointer
-                hover:bg-gray-400 hover:scale-110 duration-200" onClick={()=>setMaster && setMaster({type:"Disable_Red_Tag"})}>Close</span>
+                <span className="absolute right-10 top-10 bg-white p-2 rounded-2xl
+                hover:bg-green-400" onClick={()=>setMaster && setMaster({type:"Disable_Red_Tag"})}>Close</span>
                 <div className="w-full h-full flex flex-col justify-center items-center gap-3">
                     <h1 className="text-center font-bold text-2xl">Red Tag</h1>
                     <img src="https://cdn-icons-gif.flaticon.com/7994/7994392.gif" className="w-25 rounded-2xl"/>

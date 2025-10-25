@@ -68,6 +68,7 @@ export interface MasterType{
     "Main Station":"true" | "false" | null,
     "Parts":parts[] | null,
     "Main Line":string | null,
+    "Red Tag":true | false
 }
 
 export interface ScannedType{
@@ -116,6 +117,15 @@ export type updateSAPayload={
     "data":[
         {
             "Parts":{"Part_Name": string,"QC_ID": string[]}[]
+        }
+    ]
+}
+
+export type AddRedTagPayload={
+    "data":[
+        {
+            "QC_ID":string,
+            "Quantity":number
         }
     ]
 }

@@ -21,7 +21,6 @@ export function InitiateScan(){
     async function handleChange(e:ChangeEvent<HTMLInputElement>){
         
         const data=await getSATraceability(e.target.value.trim());
-
         console.log(data);
         if(data){
             const arr:{ "Name": string,"ID":string,"QC": string[],"QC_ID":string[]}[]=[];

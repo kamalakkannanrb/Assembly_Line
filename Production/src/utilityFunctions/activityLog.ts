@@ -1,6 +1,6 @@
 
 type params={
-    code:"success" | "fail",
+    code:"success" | "fail" | "alert",
     text:string   
 }
 
@@ -14,8 +14,14 @@ export function addActivity(arg:params){
             "span2":"mx-2 shrink-0 font-extralight text-xs"
         },
         "fail":{
-            "div":"flex items-center p-1 my-3 border border-red-200 rounded-lg bg-red-100",
-            "span1":"w-2.5 h-2.5 mx-2 shrink-0 bg-red-500 rounded-full",
+            "div":"flex items-center p-1 my-3 border border-amber-200 rounded-lg bg-amber-100",
+            "span1":"w-2.5 h-2.5 mx-2 shrink-0 bg-amber-500 rounded-full",
+            "p":"grow",
+            "span2":"mx-2 shrink-0 font-extralight text-xs"
+        },
+        "alert":{
+            "div":"flex items-center p-1 my-3 border border-amber-200 rounded-lg bg-amber-100",
+            "span1":"w-2.5 h-2.5 mx-2 shrink-0 bg-amber-500 rounded-full",
             "p":"grow",
             "span2":"mx-2 shrink-0 font-extralight text-xs"
         }
@@ -27,12 +33,8 @@ export function addActivity(arg:params){
     span1.className=nodes[arg.code].span1;
     const p=document.createElement('p');
     p.className=nodes[arg.code].p;
-    if(arg.code=="success"){
-        p.innerText=arg.text+" scanned"
-    }
-    else{
-        p.innerText=arg.text+" wrong part";
-    }
+    p.style.wordBreak="break-word";
+    p.innerText=arg.text;
     const span2=document.createElement('span');
     span2.className=nodes[arg.code].span2;
     span2.innerText=time.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
