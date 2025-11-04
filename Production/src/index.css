@@ -32,8 +32,8 @@ body{
         @apply w-1/4 min-w-48 max-w-2xs p-3 bg-white border border-gray-200 rounded-xl;
     }
     .BottomBoxes{
-        @apply w-1/3 min-w-63 bg-white border border-gray-200 rounded-xl;
-        max-height: calc(100dvh - 390px);
+        @apply w-1/3 min-w-63 overflow-hidden bg-white border border-gray-200 rounded-xl;
+        height: calc(100dvh - 390px);
     }
     .BottomBoxes>h1{
         @apply bg-white font-bold text-center text-2xl my-2;
@@ -43,8 +43,9 @@ body{
 
 @theme{
 
-    --animate-slide:slide-up 0.5s ease-in-out forwards;
-    --animate-slideRight:slide-right 0.5s ease-in-out forwards;
+    --animate-slide-up:slide-up 0.5s ease-in-out forwards;
+    --animate-slide-left:slide-left 0.5s ease-in-out forwards;
+    --animate-slide-down:slide-down 0.5s ease-in-out forwards;
 
     @keyframes slide-up {
         from{
@@ -57,14 +58,23 @@ body{
         }
     }
 
-    @keyframes slide-right {
+    @keyframes slide-left {
         from{
-            transform:translate(90vw);
+            transform:translateX(90vw);
             opacity: 0.1;
         }
         to{
-            transform:translate(0vw);
+            transform:translateX(0vw);
             opacity: 1;;
+        }
+    }
+
+    @keyframes slide-down {
+        from{
+            transform:translateY(100vh);
+        }
+        to{
+            transform:translateY(0vh);
         }
     }
 }

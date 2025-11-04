@@ -3,7 +3,7 @@
 // import { logError } from "../utilityFunctions/errorLog";
 
 //Types
-import { SASequence,Bin,SATraceability } from "../types";
+import { SASequence,Bin,SATraceability, QC } from "../types";
 
 export async function getSABOM():Promise<{"Part_Name":string,"ID":string,"Version":string}[] | null>{
     const data=await fetch("http://127.0.0.1:3000/bom").then((res)=>res.json()).catch(e=>console.error(e));
@@ -30,7 +30,7 @@ export async function getSATraceability(stikcer:string):Promise<[SATraceability]
     return data?.data?data.data:null;
 }
 
-export async function getQC(id:string) {
+export async function getQC(id:string):Promise<[QC] | null> {
     const data=await fetch(`http://127.0.0.1:3000/QC/${id}`).then((res)=>res.json()).catch(e=>console.error(e));
     return data?.data?data.data:null;
 }

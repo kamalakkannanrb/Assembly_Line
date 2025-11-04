@@ -24,27 +24,31 @@ export function Submit(){
     async function handleSubmit(){
     setLoading(true);
     const label=(document.getElementById("Sticker")?.innerText || "Default").trim();
-    const parts:{"Part_Name":string,"QC_ID":string[]}[]=[];
+    const parts:{"Part_Name":string,"QC_ID":string,"Quantity":string}[]=[];
     scanned.Already.forEach((ele)=>{
       parts.push(
         {
           //Should be Part ID
           "Part_Name":ele.ID,
-          "QC_ID":[ele.QC[0]]
+          "QC_ID":ele.QC_ID,
+          "Quantity":ele.Quantity
         }
       )
     })
+
+  
     scanned.Current.forEach((ele)=>{
-      parts.push(
-        {
-          //Should be Part ID
+      ele.QC.forEach((qc)=>{
+        parts.push({
           "Part_Name":ele.ID,
-          "QC_ID":[ele.QC[0]]
-        }
-      )
+          "QC_ID":qc.QC_ID,
+          "Quantity":qc.Quantity
+        })
+      })
     })
     
-    // console.log(payload);
+    console.log(parts);
+
     if(master?.["Main Station"]=="true"){
       await addSATraceability({
         "data":[

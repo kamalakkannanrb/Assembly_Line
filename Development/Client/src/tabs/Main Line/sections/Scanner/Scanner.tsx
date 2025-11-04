@@ -24,7 +24,7 @@ export function List(){
     const[data,setData]=useState<VIN | null>(null);
     useEffect(()=>{
         (async()=>{
-            if(master?.["Main Line"]){
+            if(master?.["Main Line"]!=null){
                 const data:[VIN] | null=await getVIN(master?.["Main Line"]);
                 console.log(data);
                 data && setData(data[0]);
@@ -32,7 +32,8 @@ export function List(){
         }
         )()
 
-    },[])
+    },[master["Main Line"]])
+    console.log("rendered")
     return(
         <div className="w-fit h-fit flex justify-center items-center p-5 bg-white rounded-4xl">
             <ul>

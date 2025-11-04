@@ -14,8 +14,8 @@ export function addActivity(arg:params){
             "span2":"mx-2 shrink-0 font-extralight text-xs"
         },
         "fail":{
-            "div":"flex items-center p-1 my-3 border border-amber-200 rounded-lg bg-amber-100",
-            "span1":"w-2.5 h-2.5 mx-2 shrink-0 bg-amber-500 rounded-full",
+            "div":"flex items-center p-1 my-3 border border-red-200 rounded-lg bg-red-100",
+            "span1":"w-2.5 h-2.5 mx-2 shrink-0 bg-red-500 rounded-full",
             "p":"grow",
             "span2":"mx-2 shrink-0 font-extralight text-xs"
         },

@@ -116,8 +116,11 @@ export function Master({children}:{children:ReactNode}){
 
 type ScanActionType=
    | {type:"Reset"}
-   | {type:"Set_Already",data:{"Already":{ "Name": string,"ID":string,"QC": string[],"QC_ID":string[]}[],"Current":[],"Pointer":0,"ID":string}}
-   | {type:"Add_QC_Increment_Pointer",data:{"Name":string,"ID":string,"QC":string[],"QC_ID":string[]}}
+   | {type:"Set_Already",data:{"Already":{ "Name": string,"ID":string,"QC_Name": string,"QC_ID":string,"Quantity":string}[],"Current":[],"Pointer":0,"ID":string}}
+   | {type:"Add_Item_and_QC_Increment_Pointer",data:{"Name":string,"ID":string,"QC":{"QC_Name":string,"QC_ID":string,"Quantity":string}[]}}
+   | {type:"Add_Item_and_QC",data:{"Name":string,"ID":string,"QC":{"QC_Name":string,"QC_ID":string,"Quantity":string}[]}}
+   | {type:"Add_QC_To_Same_Item" ,data:{"QC_Name":string,"QC_ID":string,"Quantity":string}[]}
+   | {type:"Add_QC_To_Same_Item_Increment_Pointer", data:{"QC_Name":string,"QC_ID":string,"Quantity":string}[]}
 
 function scannedReducer(state:ScannedType,action:ScanActionType):ScannedType{
     switch (action.type) {
@@ -131,12 +134,47 @@ function scannedReducer(state:ScannedType,action:ScanActionType):ScannedType{
             }
         }
 
-        case "Add_QC_Increment_Pointer":{
+        case "Add_Item_and_QC_Increment_Pointer":{
+            
             return{
                 ...state,
                 "Current":[...state.Current,action.data],
                 "Pointer":state.Pointer+1,
             }
+        }
+
+        case "Add_Item_and_QC":{
+           
+            return{
+                ...state,
+                "Current":[...state.Current,action.data]
+            }
+        }
+
+        case "Add_QC_To_Same_Item":{
+            
+            const newCurr=[...state.Current];
+            const last=newCurr[state.Pointer];
+            newCurr[state.Pointer]={...last,"QC":action.data};
+
+            return{
+                ...state,
+                "Current":newCurr,
+            }
+
+        }
+
+        case "Add_QC_To_Same_Item_Increment_Pointer":{
+
+            const newCurr=[...state.Current];
+            const last=newCurr[state.Pointer];
+            newCurr[state.Pointer]={...last,"QC":action.data};
+            return{
+                ...state,
+                "Current":newCurr,
+                "Pointer":state.Pointer+1
+            }
+
         }
 
         default:

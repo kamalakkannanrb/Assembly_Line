@@ -72,14 +72,15 @@ export interface MasterType{
 }
 
 export interface ScannedType{
-    "Already":{ "Name": string,"ID":string,"QC": string[],"QC_ID":string[]}[],
-    "Current":{ "Name": string,"ID":string,"QC": string[],"QC_ID":string[]}[],
+    "Already":{ "Name": string,"ID":string,"QC_Name": string,"QC_ID":string,"Quantity":string}[],
+    "Current":{ "Name": string,"ID":string,"QC": {"QC_Name":string,"QC_ID":string,"Quantity":string}[]}[],
     "Pointer":number,
     "ID":string
 }
 
 export type SATraceability={
     "Parts": {
+            "Quantity": string,
             "ID": string,
             "Part_Name": {
                 "Part_Name": string,
@@ -90,7 +91,7 @@ export type SATraceability={
                     "ID": string,
                     "QC_ID": string,
                     "zc_display_value":string
-            }[],
+            },
             "zc_display_value":string
     }[],
     "Sub_Assembly_BOM": {
@@ -108,7 +109,7 @@ export type addSAPayload={
         {
             "Sub_Assembly_BOM":string
             "SA_Traceability_ID": string,
-            "Parts":{"Part_Name": string,"QC_ID": string[]}[]
+            "Parts":{"Part_Name": string,"QC_ID": string,"Quantity":string}[]
         }
     ]
 }
@@ -116,7 +117,7 @@ export type addSAPayload={
 export type updateSAPayload={
     "data":[
         {
-            "Parts":{"Part_Name": string,"QC_ID": string[]}[]
+            "Parts":{"Part_Name": string,"QC_ID": string,"Quantity":string}[]
         }
     ]
 }
@@ -128,6 +129,17 @@ export type AddRedTagPayload={
             "Quantity":number
         }
     ]
+}
+
+export type QC={
+    "Quantity": string,
+    "ID": string,
+    "Part_Name": {
+    "Part_Name": string,
+    "ID": string,
+    "zc_display_value": string
+    },
+    "QC_ID": string 
 }
 
 export type addErrorPayload={

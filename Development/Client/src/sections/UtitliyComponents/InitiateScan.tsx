@@ -8,6 +8,7 @@ import { SetMasterContext, SetScannedContext } from "../../context/context";
 //API
 import { getSATraceability } from "../../api/getRecords";
 
+type Items={ "Name": string,"ID":string,"QC_Name": string,"QC_ID":string,"Quantity":string}
 
 export function InitiateScan(){
     useEffect(()=>{
@@ -23,10 +24,8 @@ export function InitiateScan(){
         const data=await getSATraceability(e.target.value.trim());
         console.log(data);
         if(data){
-            const arr:{ "Name": string,"ID":string,"QC": string[],"QC_ID":string[]}[]=[];
-            data?.[0].Parts.forEach((ele)=>arr.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"QC":[ele.QC_ID[0].ID],"QC_ID":[ele.QC_ID[0].QC_ID]}))
-
-            // setScanned && setScanned({"Already":arr,"Current":[],"Pointer":0,"ID":data?.[0].ID});
+            const arr:Items[]=[];
+            data?.[0].Parts.forEach((ele)=>arr.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"QC_Name":ele.QC_ID.QC_ID,"QC_ID":ele.QC_ID.ID,"Quantity":ele.Quantity}))
 
             setScanned && setScanned({type:"Set_Already",data:{"Already":arr,"Current":[],"Pointer":0,"ID":data?.[0].ID}})
 
@@ -34,15 +33,6 @@ export function InitiateScan(){
             const scanner=document.getElementById("Scanner");
             if(sticker)sticker.innerText=e.target.value.trim();
             if(scanner)scanner.focus();
-
-            // setMaster && setMaster((pre:ContextItems | null)=>{
-            //     if(pre!=null){
-            //         return {...pre,"Main Station":"null"}
-            //     }
-            //     else{
-            //         return null;
-            //     }
-            // });
 
             setMaster && setMaster({type:"Make_Main_Staion_Null"})
 
