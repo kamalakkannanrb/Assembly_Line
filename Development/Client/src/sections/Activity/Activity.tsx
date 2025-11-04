@@ -15,7 +15,7 @@ export function Activity(){
     return(
         <div className="BottomBoxes">
             <h1>Activity Log</h1>
-            <div className="h-[80%] p-3 overflow-auto">
+            <div className="p-3 h-[90%] overflow-auto">
                 <div id="ActivityLog">
                     {/* <div className="flex items-center p-1 my-3 border border-amber-200 rounded-lg bg-amber-100">
                         <span className="w-2.5 h-2.5 mx-2 shrink-0 bg-amber-500 rounded-full"></span>

@@ -26,22 +26,23 @@ export function BentoGrid(){
                   <MainLine/>
                   <RedTag/>
                   <SubAssemblyBOM/>
-                  <div className="p-5 lg:px-16">
-                    <div className="w-full h-48 flex justify-center gap-5">
-                      <Progress/>
-                      <Scanner/>
-                      <div className="TopBoxes flex flex-col justify-start items-center gap-2">
+                  <div className="p-5 h-[calc(100vh-65px)]">
+                    <div className="w-full h-full flex">
+                      <div className="w-[20%] flex flex-col gap-5 justify-center items-center">
+                        <Progress/>
+                        <Scanner/>
                         <SubAssemblyInfo/>
                         <Submit/>
+                        {/* <NextItemBar/> */}
+                      </div>
+                      <div className="w-[80%] flex gap-5">
+                        <AssembleItems/>
+                        <Activity/>
+                        {/* <Bin/> */}
                       </div>
                     </div>
-                    <NextItemBar/>
-                    <div className="w-full mt-4 flex justify-center gap-5">
-                      <AssembleItems/>
-                      {/* <Bin/> */}
-                      <Activity/>
-                    </div>
                   </div>
+                    
             </Scanned>
           </Master>
         </>
