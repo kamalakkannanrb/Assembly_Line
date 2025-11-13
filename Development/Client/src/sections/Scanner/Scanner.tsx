@@ -99,7 +99,7 @@ export function Scanner(){
             addActivity({code:"success",text:data?.[0].Part_Name.Part_Name+" scanned"});
             setScanned({
               type:"Add_Item_and_QC_Increment_Pointer",
-              data:{"Name":master.Parts[scanned.Pointer].Name,"ID":master.Parts[scanned.Pointer].ID,"QC":[{"QC_ID":data[0].ID,"QC_Name":data[0].QC_ID,"Quantity":master.Parts[scanned.Pointer].Quantity}]}
+              data:{"Name":master.Parts[scanned.Pointer].Name,"ID":master.Parts[scanned.Pointer].ID,"QC":[{"QC_ID":data[0].ID,"QC_Name":data[0].QC_ID,"Quantity":Number.parseFloat(master.Parts[scanned.Pointer].Quantity).toString()}]}
             })
 
           }
@@ -145,7 +145,7 @@ export function Scanner(){
   }
 
   return(
-    <div className="TopBoxes">
+    <div className="TopBoxes shrink-0">
       <h1 className="font-bold text-center text-2xl">Scanner</h1>
       <div className="flex flex-col justify-center items-center gap-1">
         {scanned.Current?.length!=master?.Parts?.length && master?.Station && <img src="https://cdn-icons-gif.flaticon.com/7994/7994392.gif" className="w-18 rounded-2xl"/>}

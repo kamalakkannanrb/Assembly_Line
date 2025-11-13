@@ -29,11 +29,11 @@ export function BentoGrid(){
                   <div className="p-5 h-[calc(100vh-65px)]">
                     <div className="w-full h-full flex">
                       <div className="w-[20%] flex flex-col gap-5 justify-center items-center">
+                        {/* <NextItemBar/> */}
                         <Progress/>
                         <Scanner/>
                         <SubAssemblyInfo/>
                         <Submit/>
-                        {/* <NextItemBar/> */}
                       </div>
                       <div className="w-[80%] flex gap-5">
                         <AssembleItems/>
