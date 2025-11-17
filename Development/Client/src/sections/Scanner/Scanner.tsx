@@ -21,7 +21,7 @@ export function Scanner(){
 
   async function handleChange(e:ChangeEvent<HTMLInputElement>){
 
-    console.log(scanned.Current.flat());
+    // console.log(scanned.Current.flat());
 
     if(e.target.value.trim().startsWith("BIN")){
       // const data=await getBin(e.target.value.trim());

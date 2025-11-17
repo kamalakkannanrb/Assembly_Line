@@ -20,6 +20,7 @@ export function Scanner(){
             const qc=await getQC(e.target.value.trim());
             if(qc!=null && mainMaster!="Loading" && qc[0].Part_Name.ID in mainMaster.Parts){
                 if(mainMaster.Parts[qc[0].Part_Name.ID].Status!="Completed"){
+                    let quantity=0;
                     
                 }
                 else{

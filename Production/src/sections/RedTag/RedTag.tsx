@@ -33,12 +33,12 @@ export function RedTag(){
 
     function invert(e:MouseEvent<HTMLSpanElement>){
         if(red.current){
-            if(red.current.style.right=="-235px"){
+            if(red.current.style.right=="-238px"){
                 red.current.style.right="0";
                 console.log(e.target)
             }
             else{
-                red.current.style.right="-235px";
+                red.current.style.right="-238px";
                 console.log(e.target)
 
             }
@@ -47,11 +47,10 @@ export function RedTag(){
     
     return(
 
-        <div ref={red} style={{"right":"-235px"}} className="fixed h-[70vh] w-[240px] top-25 z-20 border border-red-300 rounded-l-4xl bg-red-300
-        hover:shadow-red-400 hover:shadow-xl/80 hover:duration-400">
-            <span onClick={invert} className="absolute -left-3.5 top-[43%] hover:scale-115"><svg xmlns="http://www.w3.org/2000/svg" height="30px" width="30px" viewBox="0 -960 960 960" fill="#fb2c36"><path d="M384-96 0-480l384-384 68 68-316 316 316 316-68 68Z"/></svg></span>
-            {/* <span className="absolute right-5 top-5 bg-white p-2 rounded-2xl cursor-pointer
-            hover:bg-gray-400 hover:scale-110 duration-200" onClick={invert}>Close</span> */}
+        <div ref={red} style={{"right":"-238px"}} className="fixed h-[70vh] w-[240px] top-25 z-20 border border-red-300 rounded-l-4xl bg-red-300 duration-600">
+            {/* <span onClick={invert} className="absolute -left-3.5 top-[43%] hover:scale-115"><svg xmlns="http://www.w3.org/2000/svg" height="30px" width="30px" viewBox="0 -960 960 960" fill="#fb2c36"><path d="M384-96 0-480l384-384 68 68-316 316 316 316-68 68Z"/></svg></span> */}
+            <span onClick={invert} className="absolute -left-7.5 top-[42%] hover:scale-115"><svg xmlns="http://www.w3.org/2000/svg" height="45px" viewBox="0 -960 960 960" width="45px" fill="#fb2c36"><path d="M253-446q-9-6-13.5-15t-4.5-19q0-10 4.5-19t13.5-15l326-207q5-3 10.5-4.5T600-727q16 0 28 11.5t12 28.5v414q0 17-12 28.5T600-233q-5 0-10.5-1.5T579-239L253-446Zm307-34Zm0 134v-268L350-480l210 134Z"/></svg></span>
+
             <div className="w-full h-full flex flex-col justify-center items-center gap-3">
                 <h1 className="text-center font-bold text-2xl">Red Tag</h1>
                 <img src="https://cdn-icons-gif.flaticon.com/7994/7994392.gif" className="w-25 rounded-2xl"/>

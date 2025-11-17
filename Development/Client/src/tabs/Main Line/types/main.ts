@@ -32,7 +32,7 @@ export interface VIN{
         {
             "Type_field": "Sub Assembly" | "Part",
             "Status": "Completed" | "Pending",
-            "QC": {} | {
+            "QC": {} & {
                 "ID": string,
                 "QC_ID": string,
                 "zc_display_value": string
@@ -42,6 +42,7 @@ export interface VIN{
                 "ID": string,
                 "zc_display_value": string
             },
+            "Required_Quantity": string,
             "Quantity": string,
             "ID": string,
             "Part_Name": {} & {
@@ -49,7 +50,7 @@ export interface VIN{
                 "ID": string,
                 "zc_display_value": string
             },
-            "Sub_Assembly_Traceability": {} | {
+            "Sub_Assembly_Traceability": {} & {
                 "SA_Traceability_ID": string,
                 "ID": string,
                 "zc_display_value": string
@@ -67,10 +68,19 @@ export interface VIN{
 
 export interface DataStruct{
     [key:string]:{
-        "Part Name":string,
-        "Part ID":string,
+        "Name":string,
         "Type_field": "Sub Assembly" | "Part",
+        "Status": "Completed" | "Pending",
+        "Required_Quantity":string,
         "Quantity": string,
+        "QC":{
+            [key:string]:{
+                "QC_ID": string,
+                "Quantity":string
+            }
+            | undefined
+        },
+        "Sub_Assembly_Traceability": string,
     }
 }
 
@@ -78,23 +88,8 @@ export interface MainMasterType{
 
     "Bike Name":string,
     "Bike ID":string,
-    
-    "Already":
-        {
-            "Type_field": "Sub Assembly" | "Part",
-            "Status": "Completed",
-            "QC": {} | string,
-            "Sub_Assembly_BOM": {} | string,
-            "Quantity": string,
-            "Part_Name": {} | string,
-            "Sub_Assembly_Traceability": {} | string,
-        }[],
+    "Parts":DataStruct
 
-    "Sequence":DataStruct,
-        
-    "Auxiliary":DataStruct
-
-    
 }
 
 export interface MainScannedType{
