@@ -16,7 +16,9 @@ export const SetMainMasterContext=createContext<Dispatch<MainMasterActionType>>(
 type MainMasterActionType=
     | {type:"Set_Loading"}
     | {type:"Set_Data",data:MainMasterType}
-    | {type:"Set_SA_Traceability_ID",data:{"Part ID":string,"SA_Traceability_ID":string}}
+    | {type:"Set_SA_Traceability_ID",data:{"Part ID":string,"SA_Traceability_ID":string,"SA_Sticker":string}}
+    | {type:"Add_QC_Status_Pending",data:{"Part ID":string,"ID":string,"QC_ID":string,"Quantity":string,"Current_Quantity":string}}
+    | {type:"Add_QC_Status_Completed",data:{"Part ID":string,"ID":string,"QC_ID":string,"Quantity":string}}
 
 
 function mainMasterReducer(state:"Loading" | MainMasterType,action:MainMasterActionType){
@@ -33,6 +35,35 @@ function mainMasterReducer(state:"Loading" | MainMasterType,action:MainMasterAct
                 parts[action.data["Part ID"]].Status="Completed";
                 parts[action.data["Part ID"]].Sub_Assembly_Traceability=action.data.SA_Traceability_ID;
                 parts[action.data["Part ID"]].Quantity="1.00";
+                parts[action.data["Part ID"]].SA_Sticker=action.data.SA_Sticker;
+                return{
+                    ...state,
+                    Parts:parts
+                }
+            }   
+            else return state;
+        }
+
+        case "Add_QC_Status_Pending":{
+            if(state!="Loading"){
+                const parts={...state.Parts};
+                parts[action.data["Part ID"]].Status="Pending";
+                parts[action.data["Part ID"]].Quantity=action.data.Current_Quantity;
+                parts[action.data["Part ID"]].QC[action.data.ID]={"QC_ID":action.data.QC_ID,"Quantity":action.data.Quantity}
+                return{
+                    ...state,
+                    Parts:parts
+                }
+            }   
+            else return state;
+        }
+
+        case "Add_QC_Status_Completed":{
+            if(state!="Loading"){
+                const parts={...state.Parts};
+                parts[action.data["Part ID"]].Status="Completed";
+                parts[action.data["Part ID"]].QC[action.data.ID]={"QC_ID":action.data.QC_ID,"Quantity":action.data.Quantity}
+                parts[action.data["Part ID"]].Quantity=parts[action.data["Part ID"]].Required_Quantity;
                 return{
                     ...state,
                     Parts:parts
@@ -91,6 +122,7 @@ export function MainMaster({children}:{children:ReactNode}){
                     else{
                         acc[curr.Sub_Assembly_BOM.ID]={
                             "Name":curr.Sub_Assembly_BOM.Part_Name,
+                            "SA_Sticker":curr.Sub_Assembly_Traceability.SA_Traceability_ID,
                             "Type_field":"Sub Assembly",
                             "Quantity":curr.Quantity,
                             "QC":{},
@@ -101,7 +133,7 @@ export function MainMaster({children}:{children:ReactNode}){
                     }
                     return acc;
                 },{});
-                masterDisaptch({type:"Set_Data",data:{"Bike Name":vin[0].Bike_Name.Bike_Name,"Bike ID":vin[0].Bike_Name.ID,"Parts":parts}});
+                masterDisaptch({type:"Set_Data",data:{"VIN ID":vin[0].ID,"VIN_Number":vin[0].VIN_Number,"Bike Name":vin[0].Bike_Name.Bike_Name,"Bike ID":vin[0].Bike_Name.ID,"Parts":parts}});
             }
             else masterDisaptch({type:"Set_Loading"});
         }

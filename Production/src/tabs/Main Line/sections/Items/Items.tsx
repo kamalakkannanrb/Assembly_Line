@@ -19,8 +19,8 @@ export function Items(){
                         <th>Name</th>
                         <th>Required</th>
                         <th>Current</th>
+                        <th>QC/Sub</th>
                         <th>Status</th>
-                        {/* <th>QC/Sub</th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -31,8 +31,8 @@ export function Items(){
                                 <td>{ele.Name}</td>
                                 <td>{ele.Required_Quantity}</td>
                                 <td>{ele.Quantity}</td>
+                                <td>{ele.Type_field=="Sub Assembly"?ele?.SA_Sticker:Object.values(ele.QC).map((ele)=>`${ele?.QC_ID} - ${ele?.Quantity} , `)}</td>
                                 <td>{ele.Status}</td>
-                                {/* <td></td> */}
                             </tr>
                         )
                     })}

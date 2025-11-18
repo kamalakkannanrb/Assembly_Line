@@ -69,6 +69,7 @@ export interface VIN{
 export interface DataStruct{
     [key:string]:{
         "Name":string,
+        "SA_Sticker"?:string
         "Type_field": "Sub Assembly" | "Part",
         "Status": "Completed" | "Pending",
         "Required_Quantity":string,
@@ -86,22 +87,28 @@ export interface DataStruct{
 
 export interface MainMasterType{
 
+    "VIN ID":string,
+    "VIN_Number":string
     "Bike Name":string,
     "Bike ID":string,
     "Parts":DataStruct
 
 }
 
-export interface MainScannedType{
 
-    [key:string]:
-        {
-            "Type_field": "Sub Assembly" | "Part",
-            "Status": "Completed" | "Pending",
-            "QC": {} | string,
-            "Sub_Assembly_BOM": {} | string,
-            "Quantity": string,
-            "Part_Name": {} | string,
-            "Sub_Assembly_Traceability": {} | string,
-        }
+export interface Traceability{
+    "Type_field": "Sub Assembly" | "Part",
+    "Status": "Pending" | "Completed",
+    "QC": string,
+    "Required_Quantity": string,
+    "Sub_Assembly_BOM":string,
+    "Quantity": string,
+    "Part_Name": string,
+    "Sub_Assembly_Traceability": string
+}
+
+export interface UpdateVINPayload{
+    "data":{
+        "Traceability": Traceability[]
+    }
 }

@@ -31,7 +31,7 @@ export function Items(){
                                 <td>{ele.Name}</td>
                                 <td>{ele.Required_Quantity}</td>
                                 <td>{ele.Quantity}</td>
-                                <td>{ele.Type_field=="Sub Assembly"?ele.Sub_Assembly_Traceability:Object.values(ele.QC).map((ele)=>`${ele?.QC_ID} - ${ele?.Quantity}`)}</td>
+                                <td>{ele.Type_field=="Sub Assembly"?ele?.SA_Sticker:Object.values(ele.QC).map((ele)=>`${ele?.QC_ID} - ${ele?.Quantity} , `)}</td>
                                 <td>{ele.Status}</td>
                             </tr>
                         )

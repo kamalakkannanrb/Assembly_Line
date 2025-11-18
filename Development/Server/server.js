@@ -97,6 +97,13 @@ app.get('/VIN/:id',async(req,res)=>{
     res.send(response);
 })
 
+app.patch('/VIN/:id',async(req,res)=>{
+    // console.log(req.body);
+    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/Vin_Master_Report_API_Backend/${req.params.id}`,{method:"PATCH",headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+    console.log(response);
+    res.send(response);
+})
+
 app.get('/mainSeq/:id',async(req,res)=>{
     console.log(req.params?.id);
     const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/Main_Sequence_Master_Report_API_Backend?criteria=Bike_Name=${req.params.id}`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
