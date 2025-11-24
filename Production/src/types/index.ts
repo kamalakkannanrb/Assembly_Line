@@ -4,7 +4,6 @@ export interface SASequence{
     "Parts":
         {
             "Traceability": "Yes" | "No",
-            "Sequence_Required": "Yes" | "No",
             "Station_Number": string,
             "Quantity": string,
             "Sequence_Number": string,

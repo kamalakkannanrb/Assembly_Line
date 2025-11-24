@@ -29,7 +29,7 @@ export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | 
             const stations:string[]=[];
             var main="";
             res[0]?.Parts?.forEach((ele)=>{
-                if(!stations.includes(ele.Station_Number)){
+                if(ele.Traceability=="Yes" && !stations.includes(ele.Station_Number)){
                     stations.push(ele.Station_Number);
                 }
                 if(ele.Main_Station=="true")main=ele.Station_Number;
@@ -41,28 +41,17 @@ export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | 
     },[master?.["Sub Assembly ID"]])
 
     function handleChange(e:ChangeEvent<HTMLSelectElement>){
-
-        // setScanned && setScanned({"Already":[],"Current":[],"Pointer":0,"ID":""})
-        
+   
         setScanned && setScanned({type:"Reset"})
         const parts:parts[]=new Array<parts>();
         data?.Items[0].Parts.forEach((ele)=>{
             if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value){
-                ele.Sequence_Required=="Yes"?parts.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"Quantity":ele.Quantity,"Sequence":ele.Sequence_Number}):parts.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"Quantity":ele.Quantity,"Sequence":data.Items[0].Parts.length.toString()});
+                parts.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"Quantity":ele.Quantity,"Sequence":ele.Sequence_Number.length>0?ele.Sequence_Number:data.Items[0].Parts.length.toString()});
             };
         });
         console.log(e.target.value.length);
         parts.sort((a,b)=>(Number.parseInt(a.Sequence)-Number.parseInt(b.Sequence)));
        
-        // data && parts && setMaster && setMaster((pre:ContextItems | null)=>{
-        //     if(pre!=null){
-        //         return {...pre,"Station":e.target.value,"Parts":parts,"Main Station":data["Main Station"]==e.target.value?"true":e.target.value.length==0?"null":"false","Sub Assembly BOM Prefix":data.Items[0].Sub_Assembly_BOM_Prefix}
-        //     }
-        //     else{
-        //         return null;
-        //     }
-        // });
-
         data && parts && setMaster && setMaster({
             type:"Set_Station_Parts",
             data:{"Station":e.target.value,"Parts":parts,"Main Station":data["Main Station"]==e.target.value?"true":e.target.value.length==0?null:"false","Sub Assembly BOM Prefix":data.Items[0].Sub_Assembly_BOM_Prefix}

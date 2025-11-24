@@ -11,7 +11,7 @@ export function SubAssemblyInfo(){
     return(
         <div className="TopBoxes shrink">
             {master?.["Sub Assembly Name"] && <h1 className="text-center font-bold text-2xl">{master?.["Sub Assembly Name"]}</h1>}
-            {master?.["Sub Assembly BOM Prefix"] && <h1 id="Sticker" className="text-center">{master?.["Sub Assembly BOM Prefix"]+date.toLocaleDateString()+date.toLocaleTimeString()}</h1>}
+            {master?.["Sub Assembly BOM Prefix"] && <h1 id="Sticker" className="text-center break-all">{master?.["Sub Assembly BOM Prefix"]+date.toLocaleDateString()+date.toLocaleTimeString()}</h1>}
         </div>
     )
 }

@@ -20,9 +20,9 @@ export function MainLine(){
         <div className={`fixed h-screen w-screen ${master["Main Line"]!=null?"top-0":"top-[105vh]"} left-0 z-20 bg-gray-700/95 duration-700`}>
             <button className="absolute top-10 right-15 p-2 bg-white rounded-2xl cursor-pointer
             hover:scale-115 hover:bg-gray-400 duration-200" onClick={()=> setMaster && setMaster({type:"Diable_Main_Line"})}>Close</button>
-            <div className="w-full h-full p-8 flex flex-col justify-evenly items-center">
+            <div className="w-full h-full p-8 flex flex-col justify-evenly items-center gap-3">
                 <MainMaster>
-                    <div className="flex justify-center items-center">
+                    <div className="flex justify-center items-center h-9/10 gap-3">
                         <Items/>
                         <Scanner/>
                     </div>
@@ -32,8 +32,6 @@ export function MainLine(){
         </div>
     )    
    
-    
-    
 }
 
 // VIN0001
