@@ -27,7 +27,7 @@ export function InitiateScan(){
             const arr:Items[]=[];
             data?.[0].Parts.forEach((ele)=>arr.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"QC_Name":ele.QC_ID.QC_ID,"QC_ID":ele.QC_ID.ID,"Quantity":ele.Quantity}))
 
-            setScanned && setScanned({type:"Set_Already",data:{"Already":arr,"Current":[],"Pointer":0,"ID":data?.[0].ID}})
+            setScanned && setScanned({type:"Set_Already",data:{"Already":arr,"Current":[],"ID":data?.[0].ID}})
 
             const sticker=document.getElementById("Sticker");
             const scanner=document.getElementById("Scanner");

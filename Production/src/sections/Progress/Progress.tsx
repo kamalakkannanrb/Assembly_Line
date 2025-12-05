@@ -12,7 +12,7 @@ export function Progress(){
     const progressNumberDenominator=master?.Parts?master.Parts.length:0;
     return(
         <div className="TopBoxes">
-            <h1 className="text-center font-bold text-2xl">Progress</h1>
+            <h1>Progress</h1>
             <div className="h-9/12 flex flex-col justify-end items-center gap-2">
                 <p className="font-mono text-2xl"><span>{progressNumberNominator}</span>/<span>{progressNumberDenominator}</span></p>
                 <div className="w-9/10 h-2.5 rounded-2xl bg-gray-200">

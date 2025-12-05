@@ -61,7 +61,7 @@ export function Scanner(){
 
           if(Number.parseFloat(data[0].Quantity)<Number.parseFloat(master.Parts[scanned.Pointer].Quantity)-Quantity){
             
-            addActivity({code:"success",text:data?.[0].Part_Name.Part_Name+" scanned"});
+            addActivity({code:"success",text:data?.[0].Part_Name.Item_Name+" scanned"});
             setScanned({
               type:"Add_QC_To_Same_Item",
               data:[...newQC,{"QC_ID":data[0].ID,"QC_Name":data[0].QC_ID,"Quantity":data[0].Quantity}]
@@ -71,7 +71,7 @@ export function Scanner(){
 
           else{
             
-            addActivity({code:"success",text:data?.[0].Part_Name.Part_Name+" scanned"});
+            addActivity({code:"success",text:data?.[0].Part_Name.Item_Name+" scanned"});
             setScanned({
               type:"Add_QC_To_Same_Item_Increment_Pointer",
               data:[...newQC,{"QC_ID":data[0].ID,"QC_Name":data[0].QC_ID,"Quantity":(Number.parseFloat(master.Parts[scanned.Pointer].Quantity)-Quantity).toString()}]
@@ -85,7 +85,7 @@ export function Scanner(){
 
           if(Number.parseFloat(data[0].Quantity)<Number.parseFloat(master.Parts[scanned.Pointer].Quantity)){
 
-            addActivity({code:"success",text:data?.[0].Part_Name.Part_Name+" scanned"});
+            addActivity({code:"success",text:data?.[0].Part_Name.Item_Name+" scanned"});
             setToast({status:true,text:"Quantity is low"});
             setScanned({
               type:"Add_Item_and_QC",
@@ -96,7 +96,7 @@ export function Scanner(){
 
           else{
 
-            addActivity({code:"success",text:data?.[0].Part_Name.Part_Name+" scanned"});
+            addActivity({code:"success",text:data?.[0].Part_Name.Item_Name+" scanned"});
             setScanned({
               type:"Add_Item_and_QC_Increment_Pointer",
               data:{"Name":master.Parts[scanned.Pointer].Name,"ID":master.Parts[scanned.Pointer].ID,"QC":[{"QC_ID":data[0].ID,"QC_Name":data[0].QC_ID,"Quantity":Number.parseFloat(master.Parts[scanned.Pointer].Quantity).toString()}]}
@@ -110,7 +110,7 @@ export function Scanner(){
 
       else{
 
-        addActivity({code:"fail",text:data?.[0].Part_Name.Part_Name+" wrong part"});
+        addActivity({code:"fail",text:data?.[0].Part_Name.Item_Name+" wrong part"});
         setToast({status:true,text:"Wrong item scanned"});
 
       } 
@@ -137,7 +137,7 @@ export function Scanner(){
 
   return(
     <div className="TopBoxes">
-      <h1 className="font-bold text-center text-2xl">Scanner</h1>
+      <h1>Scanner</h1>
       <div className="flex flex-col justify-center items-center gap-1">
         {scanned.Current?.length!=master?.Parts?.length && master?.Station && <img src="https://cdn-icons-gif.flaticon.com/7994/7994392.gif" className="w-1/3 rounded-2xl"/>}
         {master?.Parts && master.Parts.length>0 && scanned.Current?.length!=master?.Parts?.length && master?.Station && <input type="text" id="Scanner" placeholder="Scanner" autoFocus autoComplete="off" className="text-center w-2/3 border border-gray-400 rounded-2xl p-1" key={master?.["Sub Assembly ID"]+""+master?.Station}

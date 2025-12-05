@@ -18,10 +18,9 @@ export function SubAssemblies({SARef}:{SARef:RefObject<HTMLSelectElement | null>
     },[])
 
     function handleChange(e:ChangeEvent<HTMLSelectElement>){
-        // setScanned && setScanned({"Already":[],"Current":[],"Pointer":0,"ID":""});
+       
         setScanned && setScanned({type:"Reset"})
         
-        // setMaster && setMaster({"Sub Assembly ID":e.target.value.split("@")[0],"Sub Assembly Name":e.target.value.split("@")[1],"Main Line":null});
         setMaster && setMaster({type:"Set_SA_Name_ID",data:{"Sub Assembly ID":e.target.value.split("@")[0],"Sub Assembly Name":e.target.value.split("@")[1]}})
     }
 

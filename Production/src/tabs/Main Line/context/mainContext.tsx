@@ -104,7 +104,7 @@ export function MainMaster({children}:{children:ReactNode}){
                         }
                         else{
                             acc[curr.Part_Name.ID]={
-                                "Name":curr.Part_Name.Part_Name,
+                                "Name":curr.Part_Name.Item_Name+" - "+curr.Part_Name.Item_Number+" - "+curr.Part_Name.Version_Number,
                                 "Type_field":"Part",
                                 "Required_Quantity":curr.Required_Quantity,
                                 "Status":Number.parseFloat(curr.Quantity)==Number.parseFloat(curr.Required_Quantity)?"Completed":"Pending",
@@ -121,7 +121,7 @@ export function MainMaster({children}:{children:ReactNode}){
                     }
                     else{
                         acc[curr.Sub_Assembly_BOM.ID]={
-                            "Name":curr.Sub_Assembly_BOM.Part_Name,
+                            "Name":curr.Sub_Assembly_BOM.Sub_Assembly,
                             "SA_Sticker":curr.Sub_Assembly_Traceability.SA_Traceability_ID,
                             "Type_field":"Sub Assembly",
                             "Quantity":curr.Quantity,
@@ -133,7 +133,7 @@ export function MainMaster({children}:{children:ReactNode}){
                     }
                     return acc;
                 },{});
-                masterDisaptch({type:"Set_Data",data:{"VIN ID":vin[0].ID,"VIN_Number":vin[0].VIN_Number,"Bike Name":vin[0].Bike_Name.Bike_Name,"Bike ID":vin[0].Bike_Name.ID,"Parts":parts}});
+                masterDisaptch({type:"Set_Data",data:{"VIN ID":vin[0].ID,"VIN_Number":vin[0].VIN_Number,"Bike Name":vin[0].Bike_Name.BOM_Name,"Bike ID":vin[0].Bike_Name.ID,"Parts":parts}});
             }
             else masterDisaptch({type:"Set_Loading"});
         }

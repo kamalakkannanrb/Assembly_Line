@@ -53,27 +53,38 @@ export interface Bin{
 
 
 export type parts={
-    "Name":string,
-    "Quantity":string,
-    "ID":string,
-    "Sequence":string,
+    [key:string]:{
+        "Name":string,
+        "Quantity":string,
+        "ID":string,
+        "Sequence":string
+    }
 }
 
 export interface MasterType{
     "Sub Assembly Name":string | null,
     "Sub Assembly ID":string | null,
     "Sub Assembly BOM Prefix":string | null,
+    "SA_Traceability_Name":string | null,
+    "SA_Traceability_ID":string | null,
     "Station":string | null,
     "Main Station":"true" | "false" | null,
-    "Parts":parts[] | null,
+    "Parts":parts | null,
     "Main Line":string | null,
     "Red Tag":true | false
+    "Already":{ "Name": string,"ID":string,"QC_Name": string,"QC_ID":string,"Quantity":string}[],
 }
 
 export interface ScannedType{
-    "Already":{ "Name": string,"ID":string,"QC_Name": string,"QC_ID":string,"Quantity":string}[],
-    "Current":{ "Name": string,"ID":string,"QC": {"QC_Name":string,"QC_ID":string,"Quantity":string}[]}[],
-    "Pointer":number,
+    "Current":{ 
+        [key:string]:{
+            "Name": string,"ID":string,"QC Quantity":string,"QC": {
+                [key:string]:{
+                    "QC_Name":string,"QC_ID":string,"Quantity":string
+                }
+            }
+        },
+    }
     "ID":string
 }
 

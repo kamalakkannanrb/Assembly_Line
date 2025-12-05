@@ -19,8 +19,8 @@ export function RedTag(){
         setData((pre)=>({...pre,"Quantity":Number.parseInt(e.target.value)}))
     }
 
-    function handleSubmit(){
-        addRedTag({
+    async function handleSubmit(){
+        await addRedTag({
             "data":[
                 {
                     ...data

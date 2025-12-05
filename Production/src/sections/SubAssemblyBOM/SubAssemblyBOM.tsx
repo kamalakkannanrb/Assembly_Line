@@ -65,7 +65,7 @@ export function SubAssemblyBOM(){
         <div className="flex w-full h-[65px] justify-start items-center gap-2 pl-3 bg-white">
             {/* <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h.01"/><path d="M17 7h.01"/><path d="M7 17h.01"/><path d="M17 17h.01"/></svg> */}
             <img src="https://raptee-media-development.zohostratus.in/Website/raptee-skull-black.png" className="w-15 h-auto"></img>
-            <h1 className="text-xl font-medium inline">Assembly Line </h1>
+            <h1 className="text-lg lg:text-2xl font-medium inline wrap-break-word">Assembly Line </h1>
             {/* <span id="Network" className={`inline-block w-3 h-3 ml-2 ${isOnline?'bg-green-600':'bg-red-600'} rounded-full animate-pulse`}></span> */}
             <div className="flex justify-end items-center gap-6 grow-1 pr-5">
                 <SubAssemblies SARef={SARef}/>

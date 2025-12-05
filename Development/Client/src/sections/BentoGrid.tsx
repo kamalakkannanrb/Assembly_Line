@@ -7,7 +7,7 @@ import { RedTag } from "./RedTag/RedTag";
 // import { Bin } from "./Bin/Bin";
 import { Submit } from "./Scanner/Submit";
 import { Activity } from "./Activity/Activity";
-import { NextItemBar } from "./NextItemBar/NextItemBar";
+// import { NextItemBar } from "./NextItemBar/NextItemBar";
 import { Progress } from "./Progress/Progress";
 import { MainLine } from "../tabs/Main Line/MainLine";
 

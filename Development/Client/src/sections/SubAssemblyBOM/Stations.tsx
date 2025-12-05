@@ -28,11 +28,11 @@ export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | 
             }
             const stations:string[]=[];
             var main="";
-            res[0]?.Parts?.forEach((ele)=>{
-                if(ele.Traceability=="Yes" && !stations.includes(ele.Station_Number)){
-                    stations.push(ele.Station_Number);
+            res[0]?.Parts?.forEach((curr)=>{
+                if(curr.Traceability=="Yes" && !stations.includes(curr.Station_Number)){
+                    stations.push(curr.Station_Number);
                 }
-                if(ele.Main_Station=="true")main=ele.Station_Number;
+                if(curr.Main_Station=="true")main=curr.Station_Number;
                 return
             })
             stations.sort();
@@ -43,18 +43,22 @@ export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | 
     function handleChange(e:ChangeEvent<HTMLSelectElement>){
    
         setScanned && setScanned({type:"Reset"})
-        const parts:parts[]=new Array<parts>();
-        data?.Items[0].Parts.forEach((ele)=>{
-            if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value){
-                parts.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"Quantity":ele.Quantity,"Sequence":ele.Sequence_Number.length>0?ele.Sequence_Number:data.Items[0].Parts.length.toString()});
+        const parts=data?.Items[0].Parts.reduce((acc:parts,curr)=>{
+            if(curr.Traceability=="Yes" && curr.Station_Number==e.target.value){
+                acc[curr.ID]={"Name":curr.Part_Name.Part_Name,"ID":curr.Part_Name.ID,"Quantity":curr.Quantity,"Sequence":curr.Sequence_Number.length>0?curr.Sequence_Number:data.Items[0].Parts.length.toString()};
             };
-        });
+            return acc;
+        },{});
         console.log(e.target.value.length);
-        parts.sort((a,b)=>(Number.parseInt(a.Sequence)-Number.parseInt(b.Sequence)));
+        // parts.sort((a,b)=>(Number.parseInt(a.Sequence)-Number.parseInt(b.Sequence)));
        
         data && parts && setMaster && setMaster({
             type:"Set_Station_Parts",
             data:{"Station":e.target.value,"Parts":parts,"Main Station":data["Main Station"]==e.target.value?"true":e.target.value.length==0?null:"false","Sub Assembly BOM Prefix":data.Items[0].Sub_Assembly_BOM_Prefix}
+        })
+
+        data && parts && setScanned && setScanned({
+            type:""
         })
 
     }
@@ -64,7 +68,7 @@ export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | 
             <select onChange={handleChange} ref={stationRef} className="rounded-lg bg-gray-100 p-1.5 text-center
             focus:border-0">
                 <option value="" defaultChecked>Choose a Station</option>
-                {data?.Stations.map((ele,index)=><option key={index}>{ele}</option>)}
+                {data?.Stations.map((curr,index)=><option key={index}>{curr}</option>)}
             </select>
         );
     }

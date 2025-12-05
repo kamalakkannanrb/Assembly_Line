@@ -10,19 +10,21 @@ export interface SASequence{
             "ID": string,
             "Part_Name": 
             {
-                "Part_Name": string,
-                "ID": string,
-                "zc_display_value": string,
-                "Part_Number": string
+                ID:string, 
+                Item_Name:string,
+                Item_Number:string,
+                Version_Number:string,
+                zc_display_value:string
             }
             "zc_display_value": string,
             "Main_Station": "false" | "true"
         }[]
     ,
-    "Sub_Assembly_BOM":
+    "Sub_Assembly_BOM": 
     {
-        "Part_Name": string,
+        "Version": string,
         "ID": string,
+        "Sub_Assembly": string,
         "zc_display_value": string
     },
     "ID":string
@@ -63,6 +65,7 @@ export interface MasterType{
     "Sub Assembly Name":string | null,
     "Sub Assembly ID":string | null,
     "Sub Assembly BOM Prefix":string | null,
+    "SA Sequence ID":string | null,
     "Station":string | null,
     "Main Station":"true" | "false" | null,
     "Parts":parts[] | null,
@@ -81,11 +84,14 @@ export type SATraceability={
     "Parts": {
             "Quantity": string,
             "ID": string,
-            "Part_Name": {
-                "Part_Name": string,
-                "ID": string,
-                "zc_display_value": string
-            },
+            "Part_Name": 
+            {
+                ID:string, 
+                Item_Name:string,
+                Item_Number:string,
+                Version_Number:string,
+                zc_display_value:string
+            }
             "QC_ID":{
                     "ID": string,
                     "QC_ID": string,
@@ -93,10 +99,12 @@ export type SATraceability={
             },
             "zc_display_value":string
     }[],
-    "Sub_Assembly_BOM": {
-        "Part_Name": string,
+    "Sub_Assembly_BOM": 
+    {
+        "Version": string,
         "ID": string,
-        "zc_display_value":string
+        "Sub_Assembly": string,
+        "zc_display_value": string
     },
     "ID": string,
     "SA_Traceability_ID":string
@@ -134,10 +142,12 @@ export type QC={
     "Quantity": string,
     "ID": string,
     "Part_Name": {
-    "Part_Name": string,
-    "ID": string,
-    "zc_display_value": string
-    },
+        ID:string, 
+        Item_Name:string,
+        Item_Number:string,
+        Version_Number:string,
+        zc_display_value:string
+    }
     "QC_ID": string 
 }
 

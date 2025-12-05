@@ -31,11 +31,17 @@ body{
     .TopBoxes{
         @apply w-9/11 p-3 bg-white border border-gray-200 rounded-xl;
     }
+
+    .TopBoxes>h1{
+        @apply text-center font-bold text-sm lg:text-2xl;
+    }
+
     .BottomBoxes{
         @apply w-1/3 min-w-63 h-full overflow-hidden bg-white border border-gray-200 rounded-xl;
     }
+
     .BottomBoxes>h1{
-        @apply bg-white font-bold text-center text-2xl my-2;
+        @apply bg-white font-bold text-center my-2 text-lg lg:text-2xl;
     }
 
 }

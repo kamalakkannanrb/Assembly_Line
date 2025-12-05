@@ -8,6 +8,7 @@ export const MasterContext=createContext<MasterType>({
     "Sub Assembly Name":null,
     "Sub Assembly ID":null,
     "Sub Assembly BOM Prefix":null,
+    "SA Sequence ID":null,
     "Station":null,
     "Main Station":null,
     "Parts":null,
@@ -20,7 +21,7 @@ export const SetScannedContext=createContext<Dispatch<ScanActionType> |null>(nul
 
 type MasterActionType=
     | {type:"Reset"}
-    | {type:"Set_SA_Name_ID",data:{"Sub Assembly Name":string,"Sub Assembly ID":string}}
+    | {type:"Set_SA_Name_ID_SA_Sequence_ID",data:{"Sub Assembly Name":string,"Sub Assembly ID":string,"SA Sequence ID":string}}
     | {type:"Set_Station_Parts",data:{"Station":string,"Parts":parts[],"Main Station":"true"|"false"|null,"Sub Assembly BOM Prefix":string}}
     | {type:"Make_Main_Staion_Null"}
     | {type:"Enable_Main_Line",data:string}
@@ -35,6 +36,7 @@ function masterReducer(state:MasterType,action:MasterActionType):MasterType{
             "Sub Assembly Name":null,
             "Sub Assembly ID":null,
             "Sub Assembly BOM Prefix":null,
+            "SA Sequence ID":null,
             "Station":null,
             "Main Station":null,
             "Parts":null,
@@ -42,7 +44,7 @@ function masterReducer(state:MasterType,action:MasterActionType):MasterType{
             "Red Tag":false
         }
         
-        case "Set_SA_Name_ID":{
+        case "Set_SA_Name_ID_SA_Sequence_ID":{
             return{
                 ...action.data,
                 "Sub Assembly BOM Prefix":null,
@@ -97,6 +99,7 @@ export function Master({children}:{children:ReactNode}){
         "Sub Assembly Name":null,
         "Sub Assembly ID":null,
         "Sub Assembly BOM Prefix":null,
+        "SA Sequence ID":null,
         "Station":null,
         "Main Station":null,
         "Parts":null,
