@@ -3,8 +3,9 @@ export interface MainSequence{
     "Parts":
         {
             "Sub_Assembly_BOM": {} & {
-                "Part_Name": string,
+                "Version": string,
                 "ID": string,
+                "Sub_Assembly": string,
                 "zc_display_value": string
             },
             "Type_field": "Sub Assembly" | "Part",
@@ -12,9 +13,11 @@ export interface MainSequence{
             "ID": string,
             "Sequence": string,
             "Part_Name": {} & {
-                "Part_Name": string,
-                "ID":string,
-                "zc_display_value": string
+                "Version_Number": string,
+                "Item_Name": string,
+                "ID": string,
+                "zc_display_value": string,
+                "Item_Number": string
             },
             "zc_display_value": string
         }[],
@@ -38,17 +41,20 @@ export interface VIN{
                 "zc_display_value": string
             },
             "Sub_Assembly_BOM": {} & {
-                "Part_Name": string,
+                "Version": string,
                 "ID": string,
+                "Sub_Assembly": string,
                 "zc_display_value": string
             },
             "Required_Quantity": string,
             "Quantity": string,
             "ID": string,
             "Part_Name": {} & {
-                "Part_Name": string,
+                "Version_Number": string,
+                "Item_Name": string,
                 "ID": string,
-                "zc_display_value": string
+                "zc_display_value": string,
+                "Item_Number": string
             },
             "Sub_Assembly_Traceability": {} & {
                 "SA_Traceability_ID": string,
@@ -59,7 +65,7 @@ export interface VIN{
         }[],
     "VIN_Number": string,
     "Bike_Name": {
-        "Bike_Name": string,
+       "BOM_Name": string,
         "ID": string,
         "zc_display_value": string
     },

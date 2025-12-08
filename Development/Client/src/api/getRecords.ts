@@ -14,8 +14,13 @@ export async function getSABOM():Promise<{"Part_Name":string,"ID":string,"Versio
     return data?.data?data.data:null;
 }
 
-export async function getSASequence(id:string | undefined):Promise<[SASequence] | null>{
+export async function getSASequence(id:string):Promise<SASequence | null>{
     const data=await fetch(`http://127.0.0.1:3000/seq/${id}`).then((res)=>res.json()).catch(e=>console.error(e));
+    return data?.data?data.data:null;
+}
+
+export async function getSASequences():Promise<SASequence[] | null>{
+    const data=await fetch(`http://127.0.0.1:3000/seq`).then((res)=>res.json()).catch(e=>console.error(e));
     return data?.data?data.data:null;
 }
 

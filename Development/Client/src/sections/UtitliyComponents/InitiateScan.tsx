@@ -3,7 +3,7 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { Toast } from "./Toast";
 
 //Contexts
-import { SetMasterContext, SetScannedContext } from "../../context/context";
+import { MasterContext, SetMasterContext, SetScannedContext } from "../../context/context";
 
 //API
 import { getSATraceability } from "../../api/getRecords";
@@ -15,7 +15,8 @@ export function InitiateScan(){
         const scan=document.getElementById("InitiateScan");
         scan && scan.focus();
     },[])
-    const[toast,setToast]=useState(false);    
+    const[toast,setToast]=useState(false); 
+    const master=useContext(MasterContext);
     const setMaster=useContext(SetMasterContext);
     const setScanned=useContext(SetScannedContext);
 
@@ -23,11 +24,11 @@ export function InitiateScan(){
         
         const data=await getSATraceability(e.target.value.trim());
         console.log(data);
-        if(data){
+        if(data && data[0].Sub_Assembly_BOM.ID==master["Sub Assembly ID"]){
             const arr:Items[]=[];
-            data?.[0].Parts.forEach((ele)=>arr.push({"Name":ele.Part_Name.Part_Name,"ID":ele.Part_Name.ID,"QC_Name":ele.QC_ID.QC_ID,"QC_ID":ele.QC_ID.ID,"Quantity":ele.Quantity}))
+            data?.[0].Parts.forEach((ele)=>arr.push({"Name":ele.Part_Name.Item_Name,"ID":ele.Part_Name.ID,"QC_Name":ele.QC_ID.QC_ID,"QC_ID":ele.QC_ID.ID,"Quantity":ele.Quantity}))
 
-            setScanned && setScanned({type:"Set_Already",data:{"Already":arr,"Current":[],"ID":data?.[0].ID}})
+            setScanned && setScanned({type:"Set_Already",data:{"Already":arr,"Current":[],"Pointer":0,"ID":data?.[0].ID}})
 
             const sticker=document.getElementById("Sticker");
             const scanner=document.getElementById("Scanner");

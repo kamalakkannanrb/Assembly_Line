@@ -54,7 +54,12 @@ app.get('/bom',async(req,res)=>{
 
 app.get('/seq/:id',async(req,res)=>{
     console.log(req.params?.id);
-    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/SA_Sequence_Master_Report_API_Backend?criteria=Sub_Assembly_BOM=${req.params.id}`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/SA_Sequence_Master_Report_API_Backend/${req.params.id}`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+    res.send(response);
+});
+
+app.get('/seq',async(req,res)=>{
+    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/SA_Sequence_Master_Report_API_Backend`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`}}).then((res)=>res.json()).catch((e)=>console.log(e)); 
     res.send(response);
 });
 
@@ -85,7 +90,7 @@ app.patch('/SATrace/:id',async(req,res)=>{
 
 app.get('/QC/:id',async(req,res)=>{
     console.log(req.params?.id);
-    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/Super_Market_Master_Report?criteria=QC_ID="${req.params.id}"`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/Super_Market_Master_Report_API_Backend?criteria=QC_ID="${req.params.id}"`,{headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
     // console.log(response);
     res.send(response);
 })
