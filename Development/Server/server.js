@@ -9,6 +9,7 @@ app_link_name=""
 client_id=""
 client_secret=""
 refresh_token=""
+publickey=""
 
 */
 
@@ -25,6 +26,7 @@ const app_link_name=process.env.app_link_name
 const client_id=process.env.client_id;
 const client_secret=process.env.client_secret;
 const refresh_token=process.env.refresh_token;
+const publickey=process.env.publickey;
 let accessToken='';
 // const header={"Authorization":`Zoho-oauthtoken ${accessToken}`};
 
@@ -69,11 +71,18 @@ app.get('/bin/:id',async (req,res) => {
     res.send(response);
 })
 
+// app.post('/SATrace',async(req,res)=>{
+//     console.log(req.body);
+//     const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/form/SA_Traceability_Report`,{method:"POST",headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+//     console.log(response);
+//     res.json({"status":"success"});
+// });
+
 app.post('/SATrace',async(req,res)=>{
     // console.log(req.body);
-    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/form/SA_Traceability_Report`,{method:"POST",headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+    const response=await fetch(`https://www.zohoapis.in/creator/custom/raptee.hv/CRUD_Sub_Assembly_Traceability?publickey=${publickey}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
     console.log(response);
-    res.json({"status":"success"});
+    res.json(response);
 });
 
 app.get('/SATrace/:id', async(req,res)=>{
@@ -82,11 +91,12 @@ app.get('/SATrace/:id', async(req,res)=>{
     res.send(response);
 });
 
-app.patch('/SATrace/:id',async(req,res)=>{
-    const response=await fetch(`https://www.zohoapis.in/creator/v2.1/data/${account_owner_name}/${app_link_name}/report/All_SA_Traceability_Reports_API_Backend/${req.params.id}`,{method:"PATCH",headers:{"Authorization":`Zoho-oauthtoken ${accessToken}`},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
+app.patch('/SATrace',async(req,res)=>{
+    
+    const response=await fetch(`https://www.zohoapis.in/creator/custom/raptee.hv/CRUD_Sub_Assembly_Traceability?publickey=${publickey}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(req.body)}).then((res)=>res.json()).catch((e)=>console.log(e)); 
     console.log(response);
-    res.send(response);
-})
+    res.json(response);
+})  
 
 app.get('/QC/:id',async(req,res)=>{
     console.log(req.params?.id);

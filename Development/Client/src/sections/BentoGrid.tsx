@@ -8,7 +8,7 @@ import { RedTag } from "./RedTag/RedTag";
 import { Submit } from "./Scanner/Submit";
 import { Activity } from "./Activity/Activity";
 // import { NextItemBar } from "./NextItemBar/NextItemBar";
-import { Progress } from "./Progress/Progress";
+// import { Progress } from "./Progress/Progress";
 import { MainLine } from "../tabs/Main Line/MainLine";
 
 //ContextComponent
@@ -30,7 +30,7 @@ export function BentoGrid(){
                     <div className="w-full h-full flex">
                       <div className="w-[20%] flex flex-col gap-5 justify-center items-center">
                         {/* <NextItemBar/> */}
-                        <Progress/>
+                        {/* <Progress/> */}
                         <Scanner/>
                         <SubAssemblyInfo/>
                         <Submit/>

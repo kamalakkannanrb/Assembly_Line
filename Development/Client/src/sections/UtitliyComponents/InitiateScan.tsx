@@ -8,7 +8,6 @@ import { MasterContext, SetMasterContext, SetScannedContext } from "../../contex
 //API
 import { getSATraceability } from "../../api/getRecords";
 
-type Items={ "Name": string,"ID":string,"QC_Name": string,"QC_ID":string,"Quantity":string}
 
 export function InitiateScan(){
     useEffect(()=>{
@@ -25,16 +24,17 @@ export function InitiateScan(){
         const data=await getSATraceability(e.target.value.trim());
         console.log(data);
         if(data && data[0].Sub_Assembly_BOM.ID==master["Sub Assembly ID"]){
-            const arr:Items[]=[];
-            data?.[0].Parts.forEach((ele)=>arr.push({"Name":ele.Part_Name.Item_Name,"ID":ele.Part_Name.ID,"QC_Name":ele.QC_ID.QC_ID,"QC_ID":ele.QC_ID.ID,"Quantity":ele.Quantity}))
 
-            setScanned && setScanned({type:"Set_Already",data:{"Already":arr,"Current":[],"Pointer":0,"ID":data?.[0].ID}})
+            // const arr:Items[]=[];
+            // data[0].Parts.forEach((ele)=>arr.push({"Name":ele.Part_Name.Item_Name,"ID":ele.Part_Name.ID,"QC_Name":ele.QC_ID.QC_ID,"QC_ID":ele.QC_ID.ID,"Quantity":ele.Quantity}))
+
+            // setScanned && setScanned({type:"Set_Already",data:{"Already":arr,"SA Traceability ID":data[0].ID}})
 
             const sticker=document.getElementById("Sticker");
             const scanner=document.getElementById("Scanner");
             if(sticker)sticker.innerText=e.target.value.trim();
             if(scanner)scanner.focus();
-
+            setScanned && setScanned({type:"SA_Traceability_Report_ID",data:data[0].ID});
             setMaster && setMaster({type:"Make_Main_Staion_Null"})
 
         }

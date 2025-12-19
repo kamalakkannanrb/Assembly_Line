@@ -19,8 +19,8 @@ export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | 
     useEffect(()=>{
         setData(null);
         (async () => {
-            const res=master["SA Sequence ID"]?await getSASequence(master?.["SA Sequence ID"]):null;
-            console.log(res);
+            const res=master["SA Sequence ID"]?await getSASequence(master["SA Sequence ID"]):null;
+            // console.log(res);
             if(!res){
                 setData(null);
                 setMaster && setMaster({type:"Reset"});
@@ -42,19 +42,30 @@ export function Stations({stationRef}:{stationRef:RefObject<HTMLSelectElement | 
 
     function handleChange(e:ChangeEvent<HTMLSelectElement>){
    
-        setScanned && setScanned({type:"Reset"})
-        const parts:parts[]=new Array<parts>();
+        // setScanned && setScanned({type:"Reset"})
+        const parts:parts={}
         data?.Items.Parts.forEach((ele)=>{
             if(ele.Traceability=="Yes" && ele.Station_Number==e.target.value){
-                parts.push({"Name":ele.Part_Name.Item_Name+" - "+ele.Part_Name.Version_Number,"ID":ele.Part_Name.ID,"Quantity":ele.Quantity,"Sequence":ele.Sequence_Number.length>0?ele.Sequence_Number:data.Items.Parts.length.toString()});
+                parts[ele.Part_Name.ID]={
+                    "Name":ele.Part_Name.Item_Name,
+                    "ID":ele.Part_Name.ID,
+                    "Quantity":ele.Quantity,
+                    "Sequence":ele.Sequence_Number
+                }
+                // parts.push({"Name":ele.Part_Name.Item_Name+" - "+ele.Part_Name.Version_Number,"ID":ele.Part_Name.ID,"Quantity":ele.Quantity,"Sequence":ele.Sequence_Number.length>0?ele.Sequence_Number:data.Items.Parts.length.toString()});
             };
         });
-        console.log(e.target.value.length);
-        parts.sort((a,b)=>(Number.parseInt(a.Sequence)-Number.parseInt(b.Sequence)));
+        // console.log(e.target.value.length);
+        // parts.sort((a,b)=>(Number.parseInt(a.Sequence)-Number.parseInt(b.Sequence)));
        
         data && parts && setMaster && setMaster({
             type:"Set_Station_Parts",
             data:{"Station":e.target.value,"Parts":parts,"Main Station":data["Main Station"]==e.target.value?"true":e.target.value.length==0?null:"false","Sub Assembly BOM Prefix":data.Items.Sub_Assembly_BOM_Prefix}
+        })
+
+        data && parts && setScanned &&setScanned({
+            type:"Reset_Set_Part_Size",
+            data:Object.keys(parts).length
         })
 
     }

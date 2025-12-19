@@ -55,10 +55,12 @@ export interface Bin{
 
 
 export type parts={
-    "Name":string,
-    "Quantity":string,
-    "ID":string,
-    "Sequence":string,
+    [partID:string]:{
+        "Name":string,
+        "Quantity":string,
+        "ID":string,
+        "Sequence":string,
+    }
 }
 
 export interface MasterType{
@@ -68,16 +70,35 @@ export interface MasterType{
     "SA Sequence ID":string | null,
     "Station":string | null,
     "Main Station":"true" | "false" | null,
-    "Parts":parts[] | null,
+    "Parts":parts | null,
     "Main Line":string | null,
     "Red Tag":true | false
 }
 
+export interface QCDetails{
+    
+    "QC_Name":string,
+    "QC_ID":string,
+    "Quantity":string,
+    
+}
+
+export interface ScannedParts{
+    "Name": string,
+    "ID":string,
+    "Current Quantity":number,
+    "Required Quantity":number,
+    "QC":QCDetails[]
+}
+
 export interface ScannedType{
     "Already":{ "Name": string,"ID":string,"QC_Name": string,"QC_ID":string,"Quantity":string}[],
-    "Current":{ "Name": string,"ID":string,"QC": {"QC_Name":string,"QC_ID":string,"Quantity":string}[]}[],
-    "Pointer":number,
-    "ID":string
+    "Current":{ 
+        [partID:string]:ScannedParts
+    },
+    "Number of Parts":number,
+    "Submit":boolean,
+    "SA_Traceability_Report_ID":string
 }
 
 export type SATraceability={
@@ -112,21 +133,18 @@ export type SATraceability={
 
 
 export type addSAPayload={
-    "data": [
-        {
-            "Sub_Assembly_BOM":string
-            "SA_Traceability_ID": string,
-            "Parts":{"Part_Name": string,"QC_ID": string,"Quantity":string}[]
-        }
-    ]
+    "Type":"New",
+    "Sub_Assembly_BOM":string,
+    "SA_Traceability_ID":string,
+    "Parts":{"Part_ID": string,"QC_ID": string,"QC_Name":string,"Quantity":string}[]
+    
 }
 
 export type updateSAPayload={
-    "data":[
-        {
-            "Parts":{"Part_Name": string,"QC_ID": string,"Quantity":string}[]
-        }
-    ]
+    
+    "Parts":{"Part_ID": string,"QC_ID": string,"QC_Name":string,"Quantity":string}[]
+    "SA_Traceability_Report_ID":string
+
 }
 
 export type AddRedTagPayload={

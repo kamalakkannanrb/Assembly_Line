@@ -2,7 +2,10 @@
 import { createContext, Dispatch, ReactNode, useReducer } from "react";
 
 //Types
-import { MasterType,ScannedType,parts } from "../types";
+import { MasterType,ScannedType, QCDetails, parts, ScannedParts } from "../types";
+
+//API
+import { getQC } from "../api/getRecords";
 
 export const MasterContext=createContext<MasterType>({
     "Sub Assembly Name":null,
@@ -16,14 +19,15 @@ export const MasterContext=createContext<MasterType>({
     "Red Tag":false
 });
 export const SetMasterContext=createContext<Dispatch<MasterActionType> | null>(null);
-export const ScannedContext=createContext<ScannedType>({"Already":[],"Current":[],"Pointer":0,"ID":""});
+export const ScannedContext=createContext<ScannedType>({"Already":[],"Current":{},"SA_Traceability_Report_ID":"","Submit":false,"Number of Parts":0});
 export const SetScannedContext=createContext<Dispatch<ScanActionType> |null>(null);
 
 type MasterActionType=
     | {type:"Reset"}
-    | {type:"Set_SA_Name_ID_SA_Sequence_ID",data:{"Sub Assembly Name":string,"Sub Assembly ID":string,"SA Sequence ID":string}}
-    | {type:"Set_Station_Parts",data:{"Station":string,"Parts":parts[],"Main Station":"true"|"false"|null,"Sub Assembly BOM Prefix":string}}
+    | {type:"Set_SA_Name_ID_SA_Sequence_ID",data:Pick<MasterType,"Sub Assembly Name" | "Sub Assembly ID" | "SA Sequence ID">}
+    | {type:"Set_Station_Parts",data:Pick<MasterType,"Station" | "Parts" | "Main Station" | "Sub Assembly BOM Prefix">}
     | {type:"Make_Main_Staion_Null"}
+    | {type:"Make_Main_Station_false"}
     | {type:"Enable_Main_Line",data:string}
     | {type:"Diable_Main_Line"}
     | {type:"Enable_Red_Tag"}
@@ -66,6 +70,11 @@ function masterReducer(state:MasterType,action:MasterActionType):MasterType{
         case "Make_Main_Staion_Null":return{
             ...state,
             "Main Station":null
+        }
+
+        case "Make_Main_Station_false":return{
+            ...state,
+            "Main Station":"false"
         }
 
         case "Enable_Main_Line":return{
@@ -119,66 +128,111 @@ export function Master({children}:{children:ReactNode}){
 
 type ScanActionType=
    | {type:"Reset"}
-   | {type:"Set_Already",data:{"Already":{ "Name": string,"ID":string,"QC_Name": string,"QC_ID":string,"Quantity":string}[],"Current":[],"Pointer":0,"ID":string}}
-   | {type:"Add_Item_and_QC_Increment_Pointer",data:{"Name":string,"ID":string,"QC":{"QC_Name":string,"QC_ID":string,"Quantity":string}[]}}
-   | {type:"Add_Item_and_QC",data:{"Name":string,"ID":string,"QC":{"QC_Name":string,"QC_ID":string,"Quantity":string}[]}}
-   | {type:"Add_QC_To_Same_Item" ,data:{"QC_Name":string,"QC_ID":string,"Quantity":string}[]}
-   | {type:"Add_QC_To_Same_Item_Increment_Pointer", data:{"QC_Name":string,"QC_ID":string,"Quantity":string}[]}
+   | {type:"Reset_Set_Part_Size",data:number}
+   | {type:"Set_Already",data:Pick<ScannedType,"Already" | "SA_Traceability_Report_ID">}
+   | {type:"SA_Traceability_Report_ID",data:string}
+   | {type:"Set_Part_and_QC",data:ScannedParts}
+   | {type:"After_Submit_Workflows", data:{"Part_ID": string,"QC_ID": string,"QC_Name":string,"Quantity": string}[]} 
+
 
 function scannedReducer(state:ScannedType,action:ScanActionType):ScannedType{
     switch (action.type) {
         case "Reset":return{
-            "Already":[],"Current":[],"Pointer":0,"ID":""
+            "Already":[],"Current":{},"SA_Traceability_Report_ID":"","Submit":false,"Number of Parts":0
+        }
+
+        case "Reset_Set_Part_Size":return{
+            "Already":[],"Current":{},"SA_Traceability_Report_ID":"","Submit":false,"Number of Parts":action.data
         }
 
         case "Set_Already":{
             return{
+                ...state,
                 ...action.data
             }
         }
 
-        case "Add_Item_and_QC_Increment_Pointer":{
-            
+        case "SA_Traceability_Report_ID":return{
+            ...state,
+            "SA_Traceability_Report_ID":action.data
+        }
+
+        case "Set_Part_and_QC":{
+            const curr={...state.Current}
+            curr[action.data["ID"]]=action.data
+            let flag=false;
+            const arr=Object.values(curr)
+            if(state["Number of Parts"]>0 && state["Number of Parts"]==arr.length){
+                for(const values of arr){
+                    if(values["Current Quantity"]>=values["Required Quantity"]){
+                        flag=true;
+                    }
+                    else{
+                        flag=false;
+                        break;
+                    }
+                }
+            }
             return{
                 ...state,
-                "Current":[...state.Current,action.data],
-                "Pointer":state.Pointer+1,
+                "Current":curr,
+                "Submit":flag
             }
         }
 
-        case "Add_Item_and_QC":{
-           
+        // case "After_Submit_Workflows":{
+        //     const curr={...state.Current}
+        //     const arr=Object.values(curr)
+        //     let flag=true
+        //     arr.forEach(async(ele)=>{
+        //         const QCs:QCDetails[]=[]
+        //         let quants=0;
+        //         for(const qc of ele.QC){
+        //             const response=await getQC(qc.QC_Name);
+        //             if(response && Number.parseFloat(response[0].Quantity)>0){
+        //                 QCs.push({"QC_ID":response[0].ID,"QC_Name":response[0].QC_ID,"Quantity":response[0].Quantity});
+        //                 quants+=Number.parseFloat(response[0].Quantity);
+        //                 if(quants>=ele["Required Quantity"])break;
+        //             }
+        //         }
+        //         if(quants<curr[ele.ID]["Required Quantity"])flag=false
+        //         curr[ele.ID].QC=QCs
+        //     })
+        //     return{
+        //         ...state,
+        //         "Current":curr,
+        //         "Submit":flag
+        //     }
+        // }
+
+        case "After_Submit_Workflows":{
+            const curr={...state.Current};
+            console.log(curr);
+            Object.values(curr).forEach((ele)=>{
+                ele["Current Quantity"]=0;
+                ele.QC=[]
+            })
+            let flag=true;
+            for(const qc of action.data){
+                if(Number.parseFloat(qc.Quantity)>0){
+                    curr[qc.Part_ID]["Current Quantity"]+=Number.parseFloat(qc.Quantity);
+                    curr[qc.Part_ID].QC.push({"QC_ID":qc.QC_ID,"QC_Name":qc.QC_Name,"Quantity":qc.Quantity})
+                }
+            }
+            const arr=Object.values(curr);
+            for(const part of arr){
+                if(part["Current Quantity"]<part["Required Quantity"]){
+                    flag=false;
+                    break;
+                }
+            }
             return{
                 ...state,
-                "Current":[...state.Current,action.data]
+                "Current":curr,
+                "Submit":flag
             }
         }
 
-        case "Add_QC_To_Same_Item":{
-            
-            const newCurr=[...state.Current];
-            const last=newCurr[state.Pointer];
-            newCurr[state.Pointer]={...last,"QC":action.data};
-
-            return{
-                ...state,
-                "Current":newCurr,
-            }
-
-        }
-
-        case "Add_QC_To_Same_Item_Increment_Pointer":{
-
-            const newCurr=[...state.Current];
-            const last=newCurr[state.Pointer];
-            newCurr[state.Pointer]={...last,"QC":action.data};
-            return{
-                ...state,
-                "Current":newCurr,
-                "Pointer":state.Pointer+1
-            }
-
-        }
 
         default:
             return state;
@@ -186,7 +240,7 @@ function scannedReducer(state:ScannedType,action:ScanActionType):ScannedType{
 }
 
 export function Scanned({children}:{children:ReactNode}){
-    const[state,disaptch]=useReducer(scannedReducer,{"Already":[],"Current":[],"Pointer":0,"ID":""});
+    const[state,disaptch]=useReducer(scannedReducer,{"Already":[],"Current":{},"SA_Traceability_Report_ID":"","Submit":false,"Number of Parts":0});
 
     return(
         <ScannedContext value={state}>
